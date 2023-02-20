@@ -1,2 +1,2 @@
-# TQS_104142
-TQS Individual Portfolio
+# **Teste e Qualidade de Software**
+TQS Individual Portfolio - Tiago Carvalho - 104142 - 2023
