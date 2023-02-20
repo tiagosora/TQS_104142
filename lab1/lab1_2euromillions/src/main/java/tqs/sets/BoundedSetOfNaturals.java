@@ -23,19 +23,26 @@ public class BoundedSetOfNaturals implements Iterable<Integer> {
         if (this.collection.contains(element)) {
             throw new IllegalArgumentException("duplicate value: " + element);
         }
-
         if (element <= 0) {
             throw new IllegalArgumentException("Illegal argument: not a natural number");
         }
-
         collection.add(element);
-
     }
 
     public void add(int[] numbers) {
         for (int number : numbers) {
             this.add(number);
         }
+    }
+
+    public void remove(int element) {
+        if (this.isEmpty()) {
+            throw new IllegalArgumentException("bounded set is empty.");
+        }
+        if ( ! this.collection.contains(element)){
+            throw new IllegalArgumentException("value not in the bounded set.");
+        }
+        collection.remove(element);
     }
 
     public BoundedSetOfNaturals(int maxSize) {
@@ -58,15 +65,21 @@ public class BoundedSetOfNaturals implements Iterable<Integer> {
         return newSet;
     }
 
+    public boolean isEmpty(){
+        return this.collection.isEmpty();
+    }
 
     public int size() {
         return this.collection.size();
     }
 
-
-    //TODO implement the intersect logic
     public boolean intersects(BoundedSetOfNaturals subset) {
-        return false;
+        for(Integer integer : subset){
+            if( ! this.collection.contains(integer)){
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean contains(Integer element) {
@@ -77,7 +90,6 @@ public class BoundedSetOfNaturals implements Iterable<Integer> {
     public Iterator<Integer> iterator() {
         return collection.iterator();
     }
-
 
     @Override
     public int hashCode() {
@@ -101,6 +113,4 @@ public class BoundedSetOfNaturals implements Iterable<Integer> {
         final BoundedSetOfNaturals other = (BoundedSetOfNaturals) obj;
         return Objects.equals(this.collection, other.collection);
     }
-
-
 }
