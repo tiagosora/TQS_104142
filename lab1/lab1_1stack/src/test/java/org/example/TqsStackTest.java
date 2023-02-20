@@ -17,6 +17,9 @@ public class TqsStackTest {
         this.tqsStack = new TqsStack<Object>();
     }
 
+    /**
+     * Rigourous Test :-)
+     */
     @Test
     public void testTqsStack()
     {
