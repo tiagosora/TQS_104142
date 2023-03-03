@@ -1,16 +1,16 @@
 package tqsdemo.employeemngr.employee;
 
-import org.junit.jupiter.api.DisplayName;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
 import tqsdemo.employeemngr.data.Employee;
 import tqsdemo.employeemngr.data.EmployeeRepository;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * DataJpaTest limits the test scope to the data access context (no web environment loaded, for example)

@@ -1,8 +1,8 @@
 package tqsdemo.employeemngr.service;
 
-import tqsdemo.employeemngr.data.Employee;
-
 import java.util.List;
+
+import tqsdemo.employeemngr.data.Employee;
 
 public interface EmployeeService {
 
