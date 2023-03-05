@@ -12,34 +12,34 @@ import java.util.Objects;
  */
 public class Address {
 
-    private String road;
-    private String cirty;
+    private String street;
+    private String city;
     private String state;
-    private String zio;
+    private String zipCode;
     private String houseNumber;
 
-    public Address(String road, String cirty, String state, String zio, String houseNumber) {
-        this.road = road;
-        this.cirty = cirty;
+    public Address(String road, String city, String state, String zip, String houseNumber) {
+        this.street = road;
+        this.city = city;
         this.state = state;
-        this.zio = zio;
+        this.zipCode = zip;
         this.houseNumber = houseNumber;
     }
 
-    public String getRoad() {
-        return road;
+    public String getStreet() {
+        return street;
     }
 
-    public void setRoad(String road) {
-        this.road = road;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
-    public String getCirty() {
-        return cirty;
+    public String getCity() {
+        return city;
     }
 
-    public void setCirty(String cirty) {
-        this.cirty = cirty;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getState() {
@@ -50,12 +50,12 @@ public class Address {
         this.state = state;
     }
 
-    public String getZio() {
-        return zio;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setZio(String zio) {
-        this.zio = zio;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     /**
@@ -78,7 +78,7 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address{" + "road=" + road + ", cirty=" + cirty + ", state=" + state + ", zio=" + zio + ", houseNumber=" + houseNumber + '}';
+        return "Address{" + "road=" + street + ", city=" + city + ", state=" + state + ", zip=" + zipCode + ", houseNumber=" + houseNumber + '}';
     }
 
     @Override
@@ -99,16 +99,16 @@ public class Address {
             return false;
         }
         final Address other = (Address) obj;
-        if (!Objects.equals(this.road, other.road)) {
+        if (!Objects.equals(this.street, other.street)) {
             return false;
         }
-        if (!Objects.equals(this.cirty, other.cirty)) {
+        if (!Objects.equals(this.city, other.city)) {
             return false;
         }
         if (!Objects.equals(this.state, other.state)) {
             return false;
         }
-        if (!Objects.equals(this.zio, other.zio)) {
+        if (!Objects.equals(this.zipCode, other.zipCode)) {
             return false;
         }
         if (!Objects.equals(this.houseNumber, other.houseNumber)) {

@@ -5,27 +5,28 @@
  */
 package demo;
 
-import connection.TqsBasicHttpClient;
-import geocoding.Address;
-import geocoding.AddressResolver;
-import org.apache.http.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.URISyntaxException;
 import java.util.Optional;
+
+import org.apache.http.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import connection.TqsBasicHttpClient;
+import geocoding.Address;
+import geocoding.AddressResolver;
 
 
 /**
  *
  * @author ico
  */
-public class MainGeocode {
+public class GeocodeDemoMain {
+
 
     static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
 
     /**
      * demo for address resolver
@@ -39,9 +40,6 @@ public class MainGeocode {
             
             Optional<Address> result = resolver.findAddressForLocation( 40.633116,-8.658784);
             log.info("Result: ".concat( result.get().toString() ) );
-
-            result = resolver.findAddressForLocation( 120,-600);
-            log.info("Result: ".concat( String.valueOf(result.isPresent())));
 
         } catch (URISyntaxException | IOException | ParseException | org.json.simple.parser.ParseException ex) {
             log.error(String.valueOf(ex));
