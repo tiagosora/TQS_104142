@@ -47,7 +47,8 @@ class E_EmployeeRestControllerTemplateIT {
     @Test
      void whenValidInput_thenCreateEmployee() {
         Employee bob = new Employee("bob", "bob@deti.com");
-        ResponseEntity<Employee> entity = restTemplate.postForEntity("/api/employees", bob, Employee.class);
+        // ResponseEntity<Employee> entity = restTemplate.postForEntity("/api/employees", bob, Employee.class);
+        restTemplate.postForEntity("/api/employees", bob, Employee.class);
 
         List<Employee> found = repository.findAll();
         assertThat(found).extracting(Employee::getName).containsOnly("bob");
