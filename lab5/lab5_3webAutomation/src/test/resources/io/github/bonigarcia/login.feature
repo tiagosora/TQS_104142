@@ -1,13 +1,8 @@
-Feature: Login in practice site
+Feature: Reserve flights
 
-  Scenario: Successful login
-    When I navigate to "https://bonigarcia.dev/selenium-webdriver-java/login-form.html"
-    And I login with the username "user" and password "user"
-    And I click Submit
-    Then I should be see the message "Login successful"
-
-  Scenario: Failure login
-    When I navigate to "https://bonigarcia.dev/selenium-webdriver-java/login-form.html"
-    And I login with the username "bad-user" and password "bad-password"
-    And I click Submit
-    Then I should be see the message "Invalid credentials"
+  Scenario: Successful Reserve
+    When I navigate to 'https://blazedemo.com/'
+    And I choose 'Boston' for the departure
+    And I choose 'Berlin' for the destination
+    When I find flights
+    Then I should be see the message 'Flights from Boston to Berlin:'
