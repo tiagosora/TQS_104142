@@ -13,7 +13,7 @@ import org.junit.platform.suite.api.Suite;
 @SelectClasspathResource("io/cucumber")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "io.cucumber")
-public class RunCucumberTest {
+public class BookSearchTest {
 
 }
     
