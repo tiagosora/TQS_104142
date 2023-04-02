@@ -1,13 +1,10 @@
 package tqs.euromillions;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Random;
 
 import tqs.sets.BoundedSetOfNaturals;
-
-import java.util.Random;
 
 /**
  * A set of 5 numbers and 2 starts according to the Euromillions ranges.

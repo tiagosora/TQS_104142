@@ -1,11 +1,10 @@
 package tqs.euromillions;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.*;
-import tqs.euromillions.CuponEuromillions;
-import tqs.euromillions.Dip;
-import tqs.euromillions.EuromillionsDraw;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class EuromillionsDrawTest {
 
