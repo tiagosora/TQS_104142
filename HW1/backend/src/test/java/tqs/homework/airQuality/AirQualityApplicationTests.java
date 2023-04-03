@@ -1,10 +1,10 @@
-package tqs.weather;
+package tqs.homework.airQuality;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class WeatherApplicationTests {
+class AirQualityApplicationTests {
 
 	@Test
 	void contextLoads() {

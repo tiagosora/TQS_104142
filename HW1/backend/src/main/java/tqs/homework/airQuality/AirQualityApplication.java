@@ -1,13 +1,13 @@
-package tqs.weather;
+package tqs.homework.airQuality;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WeatherApplication {
+public class AirQualityApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(WeatherApplication.class, args);
+		SpringApplication.run(AirQualityApplication.class, args);
 	}
 
 }
