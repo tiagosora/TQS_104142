@@ -57,11 +57,12 @@ public class LocalAirQualityService {
                 String[] stationNameSplited = stationName.split(",");
                 if(stationNameSplited.length > 2){
                     String country = stationNameSplited[stationNameSplited.length-1].replaceAll("[^A-Za-z]", "");
-                    if(!(countriesList.contains(country))){
+                    if(!(countriesList.contains(country)) && !(country.equals(""))){
                         countriesList.add(country);
                     }
                 }
             }
+            countriesList.sort((a,b) -> a.compareTo(b));
             this.cache.addCountriesCache(countriesList);
         }
         return countriesList;

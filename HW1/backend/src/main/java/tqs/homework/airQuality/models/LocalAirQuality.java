@@ -31,18 +31,18 @@ public class LocalAirQuality {
 
     // SETS
 
-    // public void setDay(String day) {
-    //     this.day = day;
-    // }
-    // public void setLocation(Location location) {
-    //     this.location = location;
-    // }
-    // public void setTimestamp(String timestamp) {
-    //     this.timestamp = timestamp;
-    // }
-    // public void setAirQuality(AirQuality airQuality) {
-    //     this.airQuality = airQuality;
-    // }
+    public void setDay(String day) {
+        this.day = day;
+    }
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+    public void setAirQuality(AirQuality airQuality) {
+        this.airQuality = airQuality;
+    }
 
     @Override
     public boolean equals(Object o) {

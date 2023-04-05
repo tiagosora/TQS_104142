@@ -65,30 +65,28 @@ public class AirQuality {
     
     // SETS
 
-    // public void setAirQualityString(String airQualityString) {
-    //     this.airQualityString = airQualityString;
-    // }
-    // public void setAirQualityIndex(String airQualityIndex) {
-    //     this.airQualityIndex = airQualityIndex;
-    // }
-    // public void setDominentPolutent(String dominentPolutent) {
-    //     this.dominentPolutent = dominentPolutent;
-    // }
-    // public void setNo2(String no2) {
-    //     this.no2 = no2;
-    // }
-    // public void setO3(String o3) {
-    //     this.o3 = o3;
-    // }
-    // public void setPm10(String pm10) {
-    //     this.pm10 = pm10;
-    // }
-    // public void setPm25(String pm25) {
-    //     this.pm25 = pm25;
-    // }
-    // public void setWaterGauge(String waterGauge) {
-    //     this.waterGauge = waterGauge;
-    // }
+    public void setAirQualityIndex(String airQualityIndex) {
+        this.airQualityIndex = airQualityIndex;
+        this.airQualityString = airQualityMeter(airQualityIndex);
+    }
+    public void setDominentPolutent(String dominentPolutent) {
+        this.dominentPolutent = dominentPolutent;
+    }
+    public void setNo2(String no2) {
+        this.no2 = no2;
+    }
+    public void setO3(String o3) {
+        this.o3 = o3;
+    }
+    public void setPm10(String pm10) {
+        this.pm10 = pm10;
+    }
+    public void setPm25(String pm25) {
+        this.pm25 = pm25;
+    }
+    public void setWaterGauge(String waterGauge) {
+        this.waterGauge = waterGauge;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -118,7 +116,7 @@ public class AirQuality {
         return  "{" +
                 "airQualityIndex='" + getAirQualityIndex() + "', " +
                 "airQualityString='" + getAirQualityString() + "', " +
-                "pm25='" + getPm10() + "', " +
+                "pm25='" + getPm25() + "', " +
                 "pm10='" + getPm10() + "', " +
                 "no2='" + getNo2() + "', " +
                 "o3='" + getO3() + "', " +

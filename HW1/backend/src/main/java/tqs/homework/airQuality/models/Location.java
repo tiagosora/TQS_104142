@@ -32,18 +32,18 @@ public class Location {
 
     // SETS
 
-    // public void setCode(String code) {
-    //     this.code = code;
-    // }
-    // public void setCountry(String country) {
-    //     this.country = country;
-    // }
-    // public void setGeolocation(Double[] geolocation) {
-    //     this.geolocation = geolocation;
-    // }
-    // public void setName(String name) {
-    //     this.name = name;
-    // }
+    public void setCode(String code) {
+        this.code = code;
+    }
+    public void setCountry(String country) {
+        this.country = country;
+    }
+    public void setGeolocation(Double[] geolocation) {
+        this.geolocation = geolocation;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
     
     @Override
     public boolean equals(Object o) {
@@ -69,7 +69,7 @@ public class Location {
         return  "{" +
                 "code='" + getCode() + "', " +
                 "name='" + getName() + "', " +
-                "region='" + getName() + "', " +
+                "country='" + getCountry() + "', " +
                 "geolocation='" + Arrays.toString(getGeolocation()) + "'" +
                 "}";
     }
