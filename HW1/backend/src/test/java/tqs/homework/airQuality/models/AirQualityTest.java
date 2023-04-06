@@ -3,15 +3,16 @@ package tqs.homework.airQuality.models;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class AirQualityTest {
+
+class AirQualityTest {
 
     private final String airQualityIndex = "37", airQualityString = "Good", pm25 = "39", pm10 = "2", no2 = "3.1", o3 = "37", waterGauge = "10", dominentPolutent = "o3";
     private AirQuality airQuality;
     
     @Test
-    public void whenGetMethod_thenReturnExpectedValue(){
+    void whenGetMethod_thenReturnExpectedValue(){
         airQuality = new AirQuality(airQualityIndex, pm25, pm10, no2, o3, waterGauge, dominentPolutent);
         assertEquals(airQuality.getAirQualityIndex(), airQualityIndex);
         assertEquals(airQuality.getAirQualityString(), airQualityString);
@@ -24,7 +25,7 @@ public class AirQualityTest {
     }
 
     @Test
-    public void whenSetMethod_thenReturnExpectedValue(){
+    void whenSetMethod_thenReturnExpectedValue(){
         airQuality = new AirQuality();
         this.airQuality.setAirQualityIndex(airQualityIndex);
         this.airQuality.setDominentPolutent(dominentPolutent);
@@ -45,14 +46,14 @@ public class AirQualityTest {
     }
 
     @Test
-    public void whenEmptyConstructor_thenReturnInvalidAQI(){
+    void whenEmptyConstructor_thenReturnInvalidAQI(){
         airQuality = new AirQuality();
         assertNull(airQuality.getAirQualityIndex());
         assertNull(airQuality.getAirQualityString());
     }
 
     @Test
-    public void whenEqualObject_AssertEquals(){
+    void whenEqualObject_AssertEquals(){
         AirQuality airQuality0 = new AirQuality();
         AirQuality airQuality1 = new AirQuality();
         AirQuality airQuality2 = new AirQuality(airQualityIndex, pm25, pm10, no2, o3, waterGauge, dominentPolutent);
@@ -62,7 +63,7 @@ public class AirQualityTest {
     }
 
     @Test
-    public void testToString(){
+    void testToString(){
         AirQuality airQuality2 = new AirQuality(airQualityIndex, pm25, pm10, no2, o3, waterGauge, dominentPolutent);
         assertEquals(airQuality2.toString(), "{"+"airQualityIndex='"+airQualityIndex+"', "+"airQualityString='"+airQualityString+"', "+"pm25='"+pm25 +"', "+"pm10='"+pm10+"', "+"no2='"+no2+"', "+"o3='"+o3+"', "+"waterGauge='"+waterGauge+"', "+"dominentPolutent='"+dominentPolutent+"'"+"}");
     }

@@ -3,6 +3,7 @@ package tqs.homework.airQuality.cache;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -101,7 +102,7 @@ public class Cache {
 
     public void addStationsCache(String country, HashMap<String, String> cache){
         HashMap<CacheData, CacheData> data = new HashMap<>();
-        for (HashMap.Entry<String, String> entry : cache.entrySet()){
+        for (Entry<String, String> entry : cache.entrySet()){
             String stationCode = entry.getKey();
             String stationName = cache.get(stationCode);
             data.putIfAbsent(new CacheData(stationCode), new CacheData(stationName));
@@ -126,19 +127,19 @@ public class Cache {
     }
 
     public HashMap<CacheData, CacheData> getStationsCacheFromCountry(String country){
-        for (HashMap.Entry<CacheData, HashMap<CacheData, CacheData>> entry : this.stationsCache.entrySet()){
+        for (Entry<CacheData, HashMap<CacheData, CacheData>> entry : this.stationsCache.entrySet()){
             CacheData data = entry.getKey();
             if(data.getData().equals(country)){
                 return this.stationsCache.get(data);
             }
         }
-        return null;
+        return new HashMap<>();
     }
     public void addAirQualityCache(String stationCode, LocalAirQuality cache){
         this.airQualityCache.putIfAbsent(new CacheData(stationCode), new CacheData(cache));
     }
     public CacheData getAirQualityCacheFromStation(String stationCode){
-        for (HashMap.Entry<CacheData, CacheData> entry : this.airQualityCache.entrySet()){
+        for (Entry<CacheData, CacheData> entry : this.airQualityCache.entrySet()){
             CacheData data = entry.getKey();
             if(data.getData().equals(stationCode)){
                 return this.airQualityCache.get(data);

@@ -31,7 +31,7 @@ import tqs.homework.airQuality.service.LocalAirQualityService;
 
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-public class LocalAirQualityControllerTest {
+class LocalAirQualityControllerTest {
     
     @Autowired
     private MockMvc mvc;
@@ -41,7 +41,7 @@ public class LocalAirQualityControllerTest {
 
     @Test
     @DisplayName("Calling /api/v1/countries, the API should return all mapped countries.")
-    public void whenGetCountries_thenReturnCountryList() throws Exception {
+    void whenGetCountries_thenReturnCountryList() throws Exception {
         List<String> countriesList = new ArrayList<String>(Arrays.asList("Alaska","Anshan","Anyang","Argentina","Austria","Beijing","Benxi","Brazil","California","Canada","Chaoyang","Chile","Colombia","CzechRepublic","Dandong","Denmark","Ecuador","Finland","France","Fushun","Fuxin","Georgia","Germany","Guatemala","HChMinh","HNi","Horsta","HuangdaoDistrict","Huangshan","Hubei","Huludao","Iceland","India","Iran","IranHSE","Ireland","Italy","Japan","Jiaozuo","Jinzhou","Jordan","JuCounty","Kaifeng","KenliDistrict","Liaoyang","LijinCounty","LisongDistrict","Luxembourg","Macedonia","Malaysia","Mexico","Nanping","Nepal","Ningbo","Norway","Panjin","Peru","Philippines","Poland","Portugal","Romania","Russia","Serbia","Shenyang","Slovakia","SouthAfrica","SouthKorea","SouthKoreaDMZ","Spain","Sudan","Sweden","Texas","Thailand","Tieling","UAE","USA","Utah","Vietnam","Xinyang","Yingkou","Zhengzhou"));
 
         when(service.getCountries()).thenReturn(countriesList);
@@ -61,7 +61,7 @@ public class LocalAirQualityControllerTest {
 
     @Test
     @DisplayName("Calling /api/v1/stations/Portugal, the API should return all mapped stations that match Portugal.")
-    public void whenGetStations_thenStationsListForCountry() throws Exception {
+    void whenGetStations_thenStationsListForCountry() throws Exception {
 
         HashMap<String, String> stationsPortugal = new HashMap<>();
         stationsPortugal.put("8372", "Paços de Ferreira, Paços de Ferreira, Portugal");
@@ -85,7 +85,7 @@ public class LocalAirQualityControllerTest {
 
     @Test
     @DisplayName("Calling /api/v1/air, the API should return the air quality for that station.")
-    public void whenGetAirQuality_thenReturnAirQualityForStations() throws Exception {
+    void whenGetAirQuality_thenReturnAirQualityForStations() throws Exception {
 
         // 8372, Paços de Ferreira, Paços de Ferreira, Portugal
         Double[] geolocation = {41.274166666667,-8.3761111111111};

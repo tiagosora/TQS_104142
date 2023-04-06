@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import tqs.homework.airQuality.cache.Cache;
 import tqs.homework.airQuality.cache.CacheData;
-import tqs.homework.airQuality.client.HttpClient;
 import tqs.homework.airQuality.client.RequestHandler;
 import tqs.homework.airQuality.models.AirQuality;
 import tqs.homework.airQuality.models.LocalAirQuality;
@@ -25,7 +25,7 @@ import tqs.homework.airQuality.models.Location;
 public class LocalAirQualityService {
     
     private Cache cache = new Cache();
-    private RequestHandler requestHandler = new RequestHandler(new HttpClient());
+    private RequestHandler requestHandler = new RequestHandler();
 
     public List<String> getCountries() throws URISyntaxException, IOException, ParseException{
         cache.newRequest();
@@ -45,7 +45,7 @@ public class LocalAirQualityService {
             JSONObject jsonObject = requestHandler.findCountries();
 
             if (jsonObject == null){
-                return null;
+                return new ArrayList<>();
             }
             
             JSONArray dataArray = (JSONArray)jsonObject.get("data");
@@ -71,12 +71,12 @@ public class LocalAirQualityService {
     public HashMap<String, String> getStations(String country) throws URISyntaxException, IOException, ParseException {
         cache.newRequest();
         HashMap<String, String> stationsList = new HashMap<>();
-        if(cache.getStationsCacheFromCountry(country) != null){
+        if(!(cache.getStationsCacheFromCountry(country).isEmpty())){
             cache.newHit();
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Stations for {} from Cache",country);
             HashMap<CacheData, CacheData> cachedData = cache.getStationsCacheFromCountry(country);
             
-            for(HashMap.Entry<CacheData, CacheData> entry : cachedData.entrySet()){
+            for(Entry<CacheData, CacheData> entry : cachedData.entrySet()){
                 CacheData data = entry.getKey();
                 String stationCode = (String)data.getData();
                 String stationName = (String)(cachedData.get(data).getData());
@@ -89,7 +89,7 @@ public class LocalAirQualityService {
             JSONObject jsonObject = requestHandler.findStations(country);
 
             if (jsonObject == null){
-                return null;
+                return new HashMap<>();
             }
 
             JSONArray dataArray = (JSONArray)jsonObject.get("data");
@@ -123,7 +123,7 @@ public class LocalAirQualityService {
             JSONObject jsonObject = requestHandler.findAirQuality(stationCode);
 
             if (jsonObject == null){
-                return null;
+                return new LocalAirQuality();
             }
 
             JSONObject dataObject = (JSONObject)jsonObject.get("data");
@@ -155,6 +155,8 @@ public class LocalAirQualityService {
             Location location = new Location(locationCode, locationName, locationCountry, geolocation);
             AirQuality airQuality = new AirQuality(aqi, pm25, pm10, no2, o3, wg, dominentPolutent);
             localAirQuality = new LocalAirQuality(location, airQuality, day, timestamp);
+
+            this.cache.addAirQualityCache(stationCode, localAirQuality);
         }
         return localAirQuality;
     }

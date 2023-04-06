@@ -6,14 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 
-public class LocationTest {
+class LocationTest {
     
     private final String code = "37", name = "Good", country = "39";
     private final Double[] geolocation = {41.274166666667, -8.3761111111111};
     private Location location;
     
     @Test
-    public void whenGetMethod_thenReturnExpectedValue(){
+    void whenGetMethod_thenReturnExpectedValue(){
         this.location = new Location(code, name, country, geolocation);
         assertEquals(this.location.getCode(), code);
         assertEquals(this.location.getName(), name);
@@ -22,7 +22,7 @@ public class LocationTest {
     }
 
     @Test
-    public void whenSetMethod_thenReturnExpectedValue(){
+    void whenSetMethod_thenReturnExpectedValue(){
         this.location = new Location();
         this.location.setCode(code);
         this.location.setCountry(country);
@@ -36,13 +36,13 @@ public class LocationTest {
     }
 
     @Test
-    public void whenEmptyConstructor_thenReturnInvalidCode(){
+    void whenEmptyConstructor_thenReturnInvalidCode(){
         this.location = new Location();
         assertNull(location.getCode());
     }
 
     @Test
-    public void whenEqualObject_AssertEquals(){
+    void whenEqualObject_AssertEquals(){
         Location location0 = new Location();
         Location location1 = new Location();
         Location location2 = new Location(code, name, country, geolocation);
@@ -52,7 +52,7 @@ public class LocationTest {
     }
 
     @Test
-    public void testToString(){
+    void testToString(){
         Location location = new Location(code, name, country, geolocation);
         assertEquals(location.toString(), "{"+"code='" +code+ "', "+"name='" +name+ "', "+"country='" +country+ "', "+"geolocation='" +Arrays.toString(geolocation)+ "'"+"}");
         

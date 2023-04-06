@@ -18,17 +18,9 @@ public class RequestHandler {
     private static final String API_1_SUCCESS = "ok";
     private static final String API_1_ERROR = "error";
 
-    private final IHttpClient httpClient;
-    
-    public RequestHandler(IHttpClient httpClient){
-        this.httpClient = httpClient;
-    }
+    private IHttpClient httpClient = new HttpClient();
 
     // GETS
-
-    public IHttpClient getHttpClient() {
-        return httpClient;
-    }
 
     public JSONObject findCountries() throws URISyntaxException, IOException, org.json.simple.parser.ParseException{
 
@@ -59,7 +51,7 @@ public class RequestHandler {
     public JSONObject callHttpClient(URIBuilder uriBuilder) throws IOException, URISyntaxException, ParseException{
         
         String url = uriBuilder.build().toString();
-        String apiResponse = this.httpClient.doHttpGet(url);
+        String apiResponse = httpClient.doHttpGet(url);
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "New API Request: {}", url);
 
         JSONObject jsonObject = (JSONObject)(new JSONParser().parse(apiResponse));

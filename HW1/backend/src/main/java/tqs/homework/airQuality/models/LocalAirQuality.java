@@ -5,7 +5,8 @@ import java.util.Objects;
 public class LocalAirQuality {
     private Location location;
     private AirQuality airQuality;      
-    private String day, timestamp;      
+    private String day, timestamp;     
+     
     public LocalAirQuality() {}
     public LocalAirQuality(Location location, AirQuality airQuality, String day, String timestamp){
         this.location = location;
@@ -52,10 +53,10 @@ public class LocalAirQuality {
             return false;
         }
         LocalAirQuality localAirQuality = (LocalAirQuality) o;
-        return  Objects.equals(location, localAirQuality.location) && 
-                Objects.equals(airQuality, localAirQuality.airQuality) && 
-                Objects.equals(day, localAirQuality.day) && 
-                Objects.equals(timestamp, localAirQuality.timestamp);
+        return  Objects.equals(this.location, localAirQuality.location) && 
+                Objects.equals(this.airQuality, localAirQuality.airQuality) && 
+                Objects.equals(this.day, localAirQuality.day) && 
+                Objects.equals(this.timestamp, localAirQuality.timestamp);
     }
 
     @Override

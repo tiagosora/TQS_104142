@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LocalAirQualityTest {
+class LocalAirQualityTest {
 
     private final String code = "37", name = "Good", country = "39";
     private final Double[] geolocation = {41.274166666667, -8.3761111111111};
@@ -15,7 +15,7 @@ public class LocalAirQualityTest {
     private LocalAirQuality localAirQuality;
 
     @Test
-    public void whenGetMethod_thenReturnExpectedValue(){
+    void whenGetMethod_thenReturnExpectedValue(){
         this.localAirQuality = new LocalAirQuality(location, airQuality, day, timestamp);
         assertEquals(this.localAirQuality.getAirQuality(), airQuality);
         assertEquals(this.localAirQuality.getLocation(), location);
@@ -24,7 +24,7 @@ public class LocalAirQualityTest {
     }
 
     @Test
-    public void whenSetMethod_thenReturnExpectedValue(){
+    void whenSetMethod_thenReturnExpectedValue(){
         this.localAirQuality = new LocalAirQuality();
         this.localAirQuality.setAirQuality(airQuality);
         this.localAirQuality.setLocation(location);
@@ -38,13 +38,13 @@ public class LocalAirQualityTest {
     }
 
     @Test
-    public void whenEmptyConstructor_thenReturnInvalidLocation(){
+    void whenEmptyConstructor_thenReturnInvalidLocation(){
         this.localAirQuality = new LocalAirQuality();
         assertNull(localAirQuality.getLocation());
     }
 
     @Test
-    public void whenEqualObject_AssertEquals(){
+    void whenEqualObject_AssertEquals(){
         LocalAirQuality localAirQuality0 = new LocalAirQuality();
         LocalAirQuality localAirQuality1 = new LocalAirQuality();
         LocalAirQuality localAirQuality2 = new LocalAirQuality(location, airQuality, day, timestamp);
@@ -54,7 +54,7 @@ public class LocalAirQualityTest {
     }
 
     @Test
-    public void testToString(){
+    void testToString(){
         localAirQuality = new LocalAirQuality(location, airQuality, day, timestamp);
         assertEquals(localAirQuality.toString(), "{"+"location='"+location.toString()+ "', "+"airQuality='"+airQuality.toString()+ "', "+"day='"+day+"', "+"timestamp='"+timestamp+"'" +"}");
     }

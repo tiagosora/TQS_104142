@@ -26,12 +26,12 @@ public class CacheData {
 
     // SETS
 
-    // public void setData(Object data) {
-    //     this.data = data;
-    // }
-    // public void setTimestamp(LocalDateTime timestamp) {
-    //     this.timestamp = timestamp;
-    // }
+    public void setData(Object data) {
+        this.data = data;
+    }
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
 
     @Override
     public boolean equals(Object o) {

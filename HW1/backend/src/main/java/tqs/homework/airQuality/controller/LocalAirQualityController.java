@@ -29,17 +29,27 @@ public class LocalAirQualityController {
     @GetMapping("countries")
     public ResponseEntity<List<String>> getCountries() throws IOException, InterruptedException, ParseException, URISyntaxException, org.json.simple.parser.ParseException{
         List<String> data = new ArrayList<>(localAirQualityService.getCountries());
+        if (data.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok().body(data);
     }
 
     @GetMapping("stations/{country}")
     public ResponseEntity<HashMap<String, String>> getStations(@PathVariable(value="country") String country) throws IOException, InterruptedException, ParseException, URISyntaxException, org.json.simple.parser.ParseException{
         HashMap<String, String> data = new HashMap<>(localAirQualityService.getStations(country));
+        if (data.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok().body(data);
     }
 
     @GetMapping("air/{stationCode}")
     public ResponseEntity<LocalAirQuality> getAirQuality(@PathVariable(value="stationCode") String stationCode) throws IOException, InterruptedException, ParseException, URISyntaxException, org.json.simple.parser.ParseException{
-        return ResponseEntity.ok().body(localAirQualityService.getAirQuality(stationCode));
+        LocalAirQuality localAirQuality = localAirQualityService.getAirQuality(stationCode);
+        if (localAirQuality.getAirQuality() == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(localAirQuality);
     }
 }
