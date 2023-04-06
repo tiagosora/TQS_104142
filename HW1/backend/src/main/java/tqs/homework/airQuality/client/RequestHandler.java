@@ -60,16 +60,16 @@ public class RequestHandler {
         
         String url = uriBuilder.build().toString();
         String apiResponse = this.httpClient.doHttpGet(url);
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, ("New API Request: " + url));
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "New API Request: {}", url);
 
         JSONObject jsonObject = (JSONObject)(new JSONParser().parse(apiResponse));
 
         if(((String)jsonObject.get("status")).equals(API_1_SUCCESS)){
             return jsonObject;
         } else if(((String)jsonObject.get("status")).equals(API_1_ERROR)) {
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, ("ERROR: Invalid Request!"));
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, ("ERROR: Invalid Request!"));
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, ("ERROR: API 1 is not operational!"));
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, ("ERROR: API 1 is not operational!"));
         }
         return new JSONObject();
     }

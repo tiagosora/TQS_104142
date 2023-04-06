@@ -101,7 +101,8 @@ public class Cache {
 
     public void addStationsCache(String country, HashMap<String, String> cache){
         HashMap<CacheData, CacheData> data = new HashMap<>();
-        for (String stationCode : cache.keySet()){
+        for (HashMap.Entry<String, String> entry : cache.entrySet()){
+            String stationCode = entry.getKey();
             String stationName = cache.get(stationCode);
             data.putIfAbsent(new CacheData(stationCode), new CacheData(stationName));
         }
@@ -118,14 +119,15 @@ public class Cache {
         );
     }
     protected void clearStationsCache(CacheData country) {
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Clearing Cache from Stations: "+country.getData());
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Clearing Cache from Stations: {}", country.getData());
         if (this.stationsCache.get(country)!=null){
             this.stationsCache.remove(country);
         }
     }
 
     public HashMap<CacheData, CacheData> getStationsCacheFromCountry(String country){
-        for (CacheData data : this.stationsCache.keySet()){
+        for (HashMap.Entry<CacheData, HashMap<CacheData, CacheData>> entry : this.stationsCache.entrySet()){
+            CacheData data = entry.getKey();
             if(data.getData().equals(country)){
                 return this.stationsCache.get(data);
             }
@@ -136,7 +138,8 @@ public class Cache {
         this.airQualityCache.putIfAbsent(new CacheData(stationCode), new CacheData(cache));
     }
     public CacheData getAirQualityCacheFromStation(String stationCode){
-        for (CacheData data : this.airQualityCache.keySet()){
+        for (HashMap.Entry<CacheData, CacheData> entry : this.airQualityCache.entrySet()){
+            CacheData data = entry.getKey();
             if(data.getData().equals(stationCode)){
                 return this.airQualityCache.get(data);
             }

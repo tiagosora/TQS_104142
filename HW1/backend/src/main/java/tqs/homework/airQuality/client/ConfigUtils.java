@@ -1,12 +1,14 @@
 package tqs.homework.airQuality.client;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.NoSuchElementException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ConfigUtils {
+
+    private ConfigUtils(){}
 
     static public String getPropertyFromConfig(String property) {
 
@@ -15,7 +17,7 @@ public class ConfigUtils {
             Properties prop = new Properties();
 
             if (input == null) {
-                throw new RuntimeException("Unable to find application.properties");
+                throw new FileNotFoundException("Unable to find application.properties!");
             }
 
             prop.load(input);
@@ -23,8 +25,7 @@ public class ConfigUtils {
             return prop.getProperty(property);
 
         } catch (IOException ex) {
-            Logger.getLogger(ConfigUtils.class.getName()).log(Level.SEVERE, "error reading from config", ex);
-            throw new RuntimeException("unable to get properties from config");
+            throw new NoSuchElementException("Unable to get properties from config!");
         }
     }
 }

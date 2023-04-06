@@ -73,16 +73,18 @@ public class LocalAirQualityService {
         HashMap<String, String> stationsList = new HashMap<>();
         if(cache.getStationsCacheFromCountry(country) != null){
             cache.newHit();
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Stations for "+country+" from Cache");
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Stations for {} from Cache",country);
             HashMap<CacheData, CacheData> cachedData = cache.getStationsCacheFromCountry(country);
-            for (CacheData data : cachedData.keySet()){
+            
+            for(HashMap.Entry<CacheData, CacheData> entry : cachedData.entrySet()){
+                CacheData data = entry.getKey();
                 String stationCode = (String)data.getData();
                 String stationName = (String)(cachedData.get(data).getData());
                 stationsList.putIfAbsent(stationCode, stationName);
             }
         } else {
             cache.newMiss();
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Stations for "+country+" from API");
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Stations for {} from API",country);
 
             JSONObject jsonObject = requestHandler.findStations(country);
 
@@ -111,12 +113,12 @@ public class LocalAirQualityService {
         LocalAirQuality localAirQuality = null;
         if(cache.getAirQualityCacheFromStation(stationCode) != null){
             cache.newHit();
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Air Quality for "+stationCode+" from Cache");
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Air Quality for {} from Cache",stationCode);
             CacheData cachedData = cache.getAirQualityCacheFromStation(stationCode);
             localAirQuality = (LocalAirQuality)cachedData.getData();
         } else {
             cache.newMiss();
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Air Quality for "+stationCode+" from API");
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Air Quality for for {} from from API",stationCode);
 
             JSONObject jsonObject = requestHandler.findAirQuality(stationCode);
 
