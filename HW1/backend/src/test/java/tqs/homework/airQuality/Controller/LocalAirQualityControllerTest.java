@@ -24,6 +24,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import tqs.homework.airQuality.cache.Cache;
 import tqs.homework.airQuality.models.AirQuality;
 import tqs.homework.airQuality.models.LocalAirQuality;
 import tqs.homework.airQuality.models.Location;
@@ -111,6 +112,28 @@ class LocalAirQualityControllerTest {
                 jsonPath("$.airQuality.o3", is("37")),
                 jsonPath("$.airQuality.waterGauge", is("10")),
                 jsonPath("$.airQuality.dominentPolutent", is("o3")))
+            ;
+    }
+
+    @Test
+    @DisplayName("")
+    void whenGetCache_theReturnCache() throws Exception{
+        Cache cache = new Cache();
+
+        when(service.getCache()).thenReturn(cache);
+
+        mvc.perform(
+            get("/api/v1/cache")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpectAll(
+                content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON),
+                jsonPath("$.nRequests", is(0)),
+                jsonPath("$.nHits", is(0)),
+                jsonPath("$.nMisses", is(0)),
+                jsonPath("$.countriesCache", is(new ArrayList<>())),
+                jsonPath("$.stationsCache", is(new HashMap<>())),
+                jsonPath("$.airQualityCache", is(new HashMap<>()))
+            )
             ;
     }
 }

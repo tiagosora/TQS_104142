@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import tqs.homework.airQuality.cache.Cache;
 import tqs.homework.airQuality.models.LocalAirQuality;
 import tqs.homework.airQuality.service.LocalAirQualityService;
 
@@ -51,5 +52,11 @@ public class LocalAirQualityController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(localAirQuality);
+    }
+
+    @GetMapping("cache")
+    public ResponseEntity<Cache> getCache(){
+        Cache data = localAirQualityService.getCache();
+        return ResponseEntity.ok().body(data);
     }
 }
