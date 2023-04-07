@@ -3,7 +3,14 @@ package tqs.homework.airQuality.models;
 import java.util.Objects;
 
 public class AirQuality {
-    private String airQualityString, airQualityIndex, pm25, pm10, no2, o3, waterGauge, dominentPolutent;
+    private String airQualityString;
+    private String airQualityIndex;
+    private String pm25; 
+    private String pm10; 
+    private String no2;
+    private String o3;
+    private String waterGauge;
+    private String dominentPolutent;
 
     public AirQuality() {}
     public AirQuality(String airQualityIndex, String pm25, String pm10, String no2, String o3, String waterGauge, String dominentPolutent) {

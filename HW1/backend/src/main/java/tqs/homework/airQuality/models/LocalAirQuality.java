@@ -5,7 +5,8 @@ import java.util.Objects;
 public class LocalAirQuality {
     private Location location;
     private AirQuality airQuality;      
-    private String day, timestamp;     
+    private String day;
+    private String timestamp;     
      
     public LocalAirQuality() {}
     public LocalAirQuality(Location location, AirQuality airQuality, String day, String timestamp){

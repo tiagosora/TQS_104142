@@ -34,7 +34,7 @@ public class LocalAirQualityService {
     public List<String> getCountries() throws URISyntaxException, IOException, ParseException{
         cache.newRequest();
         List<String> countriesList = new ArrayList<>();
-        if(cache.getCountriesCache().size() != 0){
+        if(!(cache.getCountriesCache().isEmpty())){
             cache.newHit();
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Countries from Cache");
             List<CacheData> cachedData = cache.getCountriesCache();

@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class Location {
-    private String code, name, country;
+    private String code;
+    private String name;
+    private String country;
     private Double[] geolocation;
     
     public Location() {}
