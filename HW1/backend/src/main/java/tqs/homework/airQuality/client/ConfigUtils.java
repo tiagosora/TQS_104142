@@ -10,7 +10,7 @@ public class ConfigUtils {
 
     private ConfigUtils(){}
 
-    static public String getPropertyFromConfig(String property) {
+    public static String getPropertyFromConfig(String property) {
 
         try (InputStream input = ConfigUtils.class.getClassLoader().getResourceAsStream("application.properties")) {
 

@@ -12,7 +12,9 @@ import tqs.homework.airQuality.models.LocalAirQuality;
 
 public class Cache {
     
-    private int nRequests, nHits, nMisses;
+    private int nRequests;
+    private int nHits;
+    private int nMisses;
     private List<CacheData> countriesCache;
     private HashMap<CacheData, HashMap<CacheData, CacheData>> stationsCache;
     private HashMap<CacheData, CacheData> airQualityCache;

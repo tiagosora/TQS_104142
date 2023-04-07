@@ -2,7 +2,6 @@ package tqs.homework.airQuality.controller;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +27,7 @@ public class LocalAirQualityController {
     private LocalAirQualityService localAirQualityService;
 
     @GetMapping("countries")
-    public ResponseEntity<List<String>> getCountries() throws IOException, InterruptedException, ParseException, URISyntaxException, org.json.simple.parser.ParseException{
+    public ResponseEntity<List<String>> getCountries() throws IOException, URISyntaxException, org.json.simple.parser.ParseException{
         List<String> data = new ArrayList<>(localAirQualityService.getCountries());
         if (data.isEmpty()){
             return ResponseEntity.notFound().build();
@@ -37,7 +36,7 @@ public class LocalAirQualityController {
     }
 
     @GetMapping("stations/{country}")
-    public ResponseEntity<HashMap<String, String>> getStations(@PathVariable(value="country") String country) throws IOException, InterruptedException, ParseException, URISyntaxException, org.json.simple.parser.ParseException{
+    public ResponseEntity<HashMap<String, String>> getStations(@PathVariable(value="country") String country) throws IOException, URISyntaxException, org.json.simple.parser.ParseException{
         HashMap<String, String> data = new HashMap<>(localAirQualityService.getStations(country));
         if (data.isEmpty()){
             return ResponseEntity.notFound().build();
@@ -46,7 +45,7 @@ public class LocalAirQualityController {
     }
 
     @GetMapping("air/{stationCode}")
-    public ResponseEntity<LocalAirQuality> getAirQuality(@PathVariable(value="stationCode") String stationCode) throws IOException, InterruptedException, ParseException, URISyntaxException, org.json.simple.parser.ParseException{
+    public ResponseEntity<LocalAirQuality> getAirQuality(@PathVariable(value="stationCode") String stationCode) throws IOException, URISyntaxException, org.json.simple.parser.ParseException{
         LocalAirQuality localAirQuality = localAirQualityService.getAirQuality(stationCode);
         if (localAirQuality.getAirQuality() == null){
             return ResponseEntity.notFound().build();
