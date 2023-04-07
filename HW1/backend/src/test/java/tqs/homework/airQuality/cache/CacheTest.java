@@ -20,9 +20,9 @@ class CacheTest {
     @Test
     void whenGetMethod_thenReturnExpectedValue(){
         this.cache = new Cache();
-        assertEquals(this.cache.getnRequests(), 0);
-        assertEquals(this.cache.getnHits(), 0);
-        assertEquals(this.cache.getnMisses(), 0);
+        assertEquals(0,this.cache.getnRequests());
+        assertEquals(0, this.cache.getnHits());
+        assertEquals(0, this.cache.getnMisses());
         assertTrue(this.cache.getCountriesCache().isEmpty());
         assertTrue(this.cache.getStationsCache().isEmpty());
         assertTrue(this.cache.getAirQualityCache().isEmpty());
@@ -35,9 +35,9 @@ class CacheTest {
         this.cache.setnHits(2);
         this.cache.setnMisses(3);
 
-        assertEquals(this.cache.getnRequests(), 1);
-        assertEquals(this.cache.getnHits(), 2);
-        assertEquals(this.cache.getnMisses(), 3);
+        assertEquals(1, this.cache.getnRequests());
+        assertEquals(2, this.cache.getnHits());
+        assertEquals(3, this.cache.getnMisses());
     }
 
     @Test
@@ -47,9 +47,9 @@ class CacheTest {
         this.cache.newMiss();
         this.cache.newHit();
 
-        assertEquals(this.cache.getnRequests(), 1);
-        assertEquals(this.cache.getnHits(), 1);
-        assertEquals(this.cache.getnMisses(), 1);
+        assertEquals(1, this.cache.getnRequests());
+        assertEquals(1, this.cache.getnHits());
+        assertEquals(1, this.cache.getnMisses());
     }
 
     @Test
