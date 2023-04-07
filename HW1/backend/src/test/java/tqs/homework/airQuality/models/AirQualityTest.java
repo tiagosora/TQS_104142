@@ -2,7 +2,6 @@ package tqs.homework.airQuality.models;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -59,8 +58,8 @@ class AirQualityTest {
         AirQuality airQuality1 = new AirQuality();
         AirQuality airQuality2 = new AirQuality(airQualityIndex, pm25, pm10, no2, o3, waterGauge, dominentPolutent);
         AirQuality airQuality3 = new AirQuality(airQualityIndex, pm25, pm10, no2, o3, waterGauge, dominentPolutent);
-        assertTrue(airQuality0.equals(airQuality1));
-        assertTrue(airQuality2.equals(airQuality3));
+        assertEquals(airQuality0, airQuality1);
+        assertEquals(airQuality2, airQuality3);
         assertEquals(airQuality0.hashCode(), airQuality1.hashCode());
         assertEquals(airQuality2.hashCode(), airQuality3.hashCode());
     }

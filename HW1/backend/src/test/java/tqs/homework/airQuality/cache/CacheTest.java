@@ -110,7 +110,7 @@ class CacheTest {
     void whenEqualsObject_AssertEquals(){
         Cache cache0 = new Cache();
         Cache cache1 = new Cache();
-        assertTrue(cache0.equals(cache1));
+        assertEquals(cache0, cache1);
         assertEquals(cache0.hashCode(), cache1.hashCode());
     }
 
