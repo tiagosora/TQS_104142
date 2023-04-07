@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,9 +39,9 @@ public class LocalAirQualityService {
             cache.newHit();
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Countries from Cache");
             List<CacheData> cachedData = cache.getCountriesCache();
-            for (CacheData data : cachedData){
-                countriesList.add((String)data.getData());
-            }
+            cachedData.forEach((CacheData data) -> 
+                countriesList.add((String)data.getData())
+            );
             
         } else {
             cache.newMiss();
@@ -66,19 +67,19 @@ public class LocalAirQualityService {
                     }
                 }
             }
-            countriesList.sort((a,b) -> a.compareTo(b));
+            countriesList.sort(Comparable::compareTo);
             this.cache.addCountriesCache(countriesList);
         }
         return countriesList;
     }
 
-    public HashMap<String, String> getStations(String country) throws URISyntaxException, IOException, ParseException {
+    public Map<String, String> getStations(String country) throws URISyntaxException, IOException, ParseException {
         cache.newRequest();
-        HashMap<String, String> stationsList = new HashMap<>();
+        Map<String, String> stationsList = new HashMap<>();
         if(!(cache.getStationsCacheFromCountry(country).isEmpty())){
             cache.newHit();
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Stations for {} from Cache",country);
-            HashMap<CacheData, CacheData> cachedData = cache.getStationsCacheFromCountry(country);
+            Map<CacheData, CacheData> cachedData = cache.getStationsCacheFromCountry(country);
             
             for(Entry<CacheData, CacheData> entry : cachedData.entrySet()){
                 CacheData data = entry.getKey();

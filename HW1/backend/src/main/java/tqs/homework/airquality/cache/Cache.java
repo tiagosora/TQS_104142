@@ -3,6 +3,7 @@ package tqs.homework.airquality.cache;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -16,8 +17,8 @@ public class Cache {
     private int nHits;
     private int nMisses;
     private List<CacheData> countriesCache;
-    private HashMap<CacheData, HashMap<CacheData, CacheData>> stationsCache;
-    private HashMap<CacheData, CacheData> airQualityCache;
+    private Map<CacheData, Map<CacheData, CacheData>> stationsCache;
+    private Map<CacheData, CacheData> airQualityCache;
 
     public Cache() {
         this.nRequests = 0;
@@ -42,10 +43,10 @@ public class Cache {
     public List<CacheData> getCountriesCache() {
         return countriesCache;
     }
-    public HashMap<CacheData, HashMap<CacheData, CacheData>> getStationsCache() {
+    public Map<CacheData, Map<CacheData, CacheData>> getStationsCache() {
         return stationsCache;
     }
-    public HashMap<CacheData, CacheData> getAirQualityCache() {
+    public Map<CacheData, CacheData> getAirQualityCache() {
         return airQualityCache;
     }
 
@@ -60,13 +61,13 @@ public class Cache {
     public void setnMisses(int nMisses) {
         this.nMisses = nMisses;
     }
-    public void setAirQualityCache(HashMap<CacheData, CacheData> airQualityCache) {
+    public void setAirQualityCache(Map<CacheData, CacheData> airQualityCache) {
         this.airQualityCache = airQualityCache;
     }
     public void setCountriesCache(List<CacheData> countriesCache) {
         this.countriesCache = countriesCache;
     }
-    public void setStationsCache(HashMap<CacheData, HashMap<CacheData, CacheData>> stationsCache) {
+    public void setStationsCache(Map<CacheData, Map<CacheData, CacheData>> stationsCache) {
         this.stationsCache = stationsCache;
     }
 
@@ -102,8 +103,8 @@ public class Cache {
         this.countriesCache = new ArrayList<>();
     }
 
-    public void addStationsCache(String country, HashMap<String, String> cache){
-        HashMap<CacheData, CacheData> data = new HashMap<>();
+    public void addStationsCache(String country, Map<String, String> cache){
+        Map<CacheData, CacheData> data = new HashMap<>();
         for (Entry<String, String> entry : cache.entrySet()){
             String stationCode = entry.getKey();
             String stationName = cache.get(stationCode);
@@ -123,15 +124,15 @@ public class Cache {
     }
     protected void clearStationsCache(String country) {
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Clearing Cache from Stations: {}", country);
-        for (Entry<CacheData, HashMap<CacheData, CacheData>> entry : this.stationsCache.entrySet()){
+        for (Entry<CacheData, Map<CacheData, CacheData>> entry : this.stationsCache.entrySet()){
             if (country.equals(entry.getKey().getData())) {
                 this.stationsCache.remove(entry.getKey());
             }
         }
     }
 
-    public HashMap<CacheData, CacheData> getStationsCacheFromCountry(String country){
-        for (Entry<CacheData, HashMap<CacheData, CacheData>> entry : this.stationsCache.entrySet()){
+    public Map<CacheData, CacheData> getStationsCacheFromCountry(String country){
+        for (Entry<CacheData, Map<CacheData, CacheData>> entry : this.stationsCache.entrySet()){
             CacheData data = entry.getKey();
             if(data.getData().equals(country)){
                 return this.stationsCache.get(data);
