@@ -113,16 +113,18 @@ public class Cache {
             new java.util.TimerTask() {
                 @Override
                 public void run() {
-                    clearStationsCache(countryCache);
+                    clearStationsCache(country);
                 }
             },
             60000
         );
     }
-    protected void clearStationsCache(CacheData country) {
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Clearing Cache from Stations: {}", country.getData());
-        if (this.stationsCache.get(country)!=null){
-            this.stationsCache.remove(country);
+    protected void clearStationsCache(String country) {
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Clearing Cache from Stations: {}", country);
+        for (Entry<CacheData, HashMap<CacheData, CacheData>> entry : this.stationsCache.entrySet()){
+            if (country.equals(entry.getKey().getData())) {
+                this.stationsCache.remove(entry.getKey());
+            }
         }
     }
 
@@ -137,7 +139,25 @@ public class Cache {
     }
     public void addAirQualityCache(String stationCode, LocalAirQuality cache){
         this.airQualityCache.putIfAbsent(new CacheData(stationCode), new CacheData(cache));
+        new java.util.Timer().schedule(
+            new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    clearAirQualityCache(stationCode);
+                }
+            },
+            60000
+        );
     }
+    protected void clearAirQualityCache(String stationCode) {
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Clearing Cache from Air Quality: {}", stationCode);
+        for (Entry<CacheData, CacheData> entry : this.airQualityCache.entrySet()){
+            if (stationCode.equals(entry.getKey().getData())) {
+                this.airQualityCache.remove(entry.getKey());
+            }
+        }
+    }
+
     public CacheData getAirQualityCacheFromStation(String stationCode){
         for (Entry<CacheData, CacheData> entry : this.airQualityCache.entrySet()){
             CacheData data = entry.getKey();

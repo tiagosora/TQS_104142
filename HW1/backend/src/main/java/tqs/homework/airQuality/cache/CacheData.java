@@ -37,17 +37,16 @@ public class CacheData {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof Cache)) {
+        if (!(o instanceof CacheData)) {
             return false;
         }
         CacheData cacheData = (CacheData) o;
-        return  Objects.equals(data, cacheData.data) && 
-                Objects.equals(timestamp, cacheData.timestamp);
+        return  Objects.equals(data, cacheData.data);
     }
     
     @Override
     public int hashCode() {
-        return Objects.hash(data, timestamp);
+        return Objects.hash(data);
     }
 
     @Override

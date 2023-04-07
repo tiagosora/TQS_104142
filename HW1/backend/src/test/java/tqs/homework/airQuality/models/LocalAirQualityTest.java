@@ -3,6 +3,7 @@ package tqs.homework.airQuality.models;
 import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LocalAirQualityTest {
 
@@ -49,8 +50,10 @@ class LocalAirQualityTest {
         LocalAirQuality localAirQuality1 = new LocalAirQuality();
         LocalAirQuality localAirQuality2 = new LocalAirQuality(location, airQuality, day, timestamp);
         LocalAirQuality localAirQuality3 = new LocalAirQuality(location, airQuality, day, timestamp);
-        assertEquals(localAirQuality0, localAirQuality1);
-        assertEquals(localAirQuality2, localAirQuality3);
+        assertTrue(localAirQuality0.equals(localAirQuality1));
+        assertTrue(localAirQuality2.equals(localAirQuality3));
+        assertEquals(localAirQuality0.hashCode(), localAirQuality1.hashCode());
+        assertEquals(localAirQuality2.hashCode(), localAirQuality3.hashCode());
     }
 
     @Test
