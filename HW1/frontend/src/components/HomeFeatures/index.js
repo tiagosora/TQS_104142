@@ -80,7 +80,7 @@ const App = () => {
                     <Button variant="contained" color="primary" onClick={handleClick} sx={{ mt: 4 }}>Request Air Quality</Button>
                 </Box>
                 <Box>
-                    <Typography variant="h5" align="center" sx={{ mb: 3 }}>Station's Response</Typography>
+                    <Typography variant="h5" align="center" sx={{ mb: 3 }}><strong>Station's Response</strong></Typography>
                     <Paper sx={{ p: 2, mt: 1, height: '470px', width: '600px', overflow: 'auto', whiteSpace: 'pre-wrap', bgcolor: 'background.default', borderRadius: '4px', bgcolor: '#f5f5f5', boxShadow: 2 }}>
                         <Typography>
                             <strong>Location</strong><br />
