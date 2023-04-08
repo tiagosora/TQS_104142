@@ -147,11 +147,26 @@ public class LocalAirQualityService {
             String dominentPolutent = (String)dataObject.get("dominentpol");
 
             JSONObject iaqiObject = (JSONObject)dataObject.get("iaqi");
-            String pm25 = ((Number)((JSONObject)iaqiObject.get("pm25")).get("v")).toString();
-            String pm10 = ((Number)((JSONObject)iaqiObject.get("pm10")).get("v")).toString();
-            String no2 = ((Number)((JSONObject)iaqiObject.get("no2")).get("v")).toString();
-            String o3 = ((Number)((JSONObject)iaqiObject.get("o3")).get("v")).toString();
-            String wg = ((Number)((JSONObject)iaqiObject.get("wg")).get("v")).toString();
+            String pm25;
+            String pm10;
+            String no2;
+            String o3;
+            String wg;
+            try {
+                pm25 = ((Number)((JSONObject)iaqiObject.get("pm25")).get("v")).toString();
+            } catch (NullPointerException e){ pm25 = ""; }
+            try {
+                pm10 = ((Number)((JSONObject)iaqiObject.get("pm10")).get("v")).toString();
+            } catch (NullPointerException e){ pm10 = ""; }
+            try {
+                no2 = ((Number)((JSONObject)iaqiObject.get("no2")).get("v")).toString();
+            } catch (NullPointerException e){ no2 = ""; }
+            try {
+                o3 = ((Number)((JSONObject)iaqiObject.get("o3")).get("v")).toString();
+            } catch (NullPointerException e){ o3 = ""; }
+            try {
+                wg = ((Number)((JSONObject)iaqiObject.get("wg")).get("v")).toString();
+            } catch (NullPointerException e){ wg = ""; }
 
             JSONObject timeObject = (JSONObject)dataObject.get("time");
             String day = (String)timeObject.get("s");

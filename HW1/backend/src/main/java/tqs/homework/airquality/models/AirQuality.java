@@ -25,6 +25,9 @@ public class AirQuality {
     }
 
     public String airQualityMeter(String airQualityIndex) {
+        if(airQualityIndex==null){
+            return "Undefined";           
+        }
         Long aqi = Long.parseLong(airQualityIndex);
         if (aqi < 0) {
             return null;
