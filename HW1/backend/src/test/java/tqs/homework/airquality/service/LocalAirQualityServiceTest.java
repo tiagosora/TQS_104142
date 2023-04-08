@@ -58,6 +58,7 @@ class LocalAirQualityServiceTest {
         countriesList.addAll(Arrays.asList("Portugal", "Spain", "France"));
 
         assertTrue(localAirQualityService.getCountries().containsAll(countriesList));
+        assertTrue(localAirQualityService.getCountries().containsAll(countriesList));
     }
 
     @Test
@@ -67,6 +68,7 @@ class LocalAirQualityServiceTest {
        stations.put("10513", "Olivais, Lisboa, Portugal");
        stations.put("8379", "Entrecampos, Lisboa, Portugal");
 
+       assertEquals(stations, localAirQualityService.getStations("Portugal"));
        assertEquals(stations, localAirQualityService.getStations("Portugal"));
     }
 
@@ -83,6 +85,7 @@ class LocalAirQualityServiceTest {
         Location location = new Location("8372", "Paços de Ferreira, Paços de Ferreira, Portugal", "Portugal", geolocation);
         LocalAirQuality localAirQuality = new LocalAirQuality(location, airQuality, "2023-04-06 11:00:00", "1680778800");
 
+        assertEquals(localAirQuality.toString(), localAirQualityService.getAirQuality("8383").toString());
         assertEquals(localAirQuality.toString(), localAirQualityService.getAirQuality("8383").toString());
     }
 

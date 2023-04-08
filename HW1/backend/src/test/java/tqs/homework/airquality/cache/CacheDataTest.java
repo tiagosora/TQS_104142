@@ -1,6 +1,7 @@
 package tqs.homework.airquality.cache;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
@@ -36,8 +37,11 @@ class CacheDataTest {
         CacheData cacheData1 = new CacheData();
         CacheData cacheData2 = new CacheData(data);
         CacheData cacheData3 = new CacheData(data);
+        assertNotEquals(0, cacheData);
+        assertEquals(cacheData0, cacheData0);
         assertEquals(cacheData0, cacheData1);
         assertEquals(cacheData2, cacheData3);
+        assertNotEquals(cacheData0, cacheData2);
         assertEquals(cacheData0.hashCode(), cacheData1.hashCode());
         assertEquals(cacheData2.hashCode(), cacheData3.hashCode());
     }

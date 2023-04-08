@@ -2,6 +2,7 @@ package tqs.homework.airquality.models;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -46,6 +47,23 @@ class AirQualityTest {
     }
 
     @Test
+    void whenSetNewAirQualityIndex_thenSetNewAirQualityString(){
+        airQuality = new AirQuality();
+        airQuality.setAirQualityIndex("25");
+        assertEquals("Good", airQuality.getAirQualityString());
+        airQuality.setAirQualityIndex("75");
+        assertEquals("Moderate", airQuality.getAirQualityString());
+        airQuality.setAirQualityIndex("125");
+        assertEquals("Unhealthy for Sensitive Groups", airQuality.getAirQualityString());
+        airQuality.setAirQualityIndex("175");
+        assertEquals("Unhealthy", airQuality.getAirQualityString());
+        airQuality.setAirQualityIndex("250");
+        assertEquals("Very Unhealthy", airQuality.getAirQualityString());
+        airQuality.setAirQualityIndex("350");
+        assertEquals("Hazardous", airQuality.getAirQualityString());
+    }
+
+    @Test
     void whenEmptyConstructor_thenReturnInvalidAQI(){
         airQuality = new AirQuality();
         assertNull(airQuality.getAirQualityIndex());
@@ -58,8 +76,11 @@ class AirQualityTest {
         AirQuality airQuality1 = new AirQuality();
         AirQuality airQuality2 = new AirQuality(airQualityIndex, pm25, pm10, no2, o3, waterGauge, dominentPolutent);
         AirQuality airQuality3 = new AirQuality(airQualityIndex, pm25, pm10, no2, o3, waterGauge, dominentPolutent);
+        assertNotEquals(0, airQuality0);
+        assertEquals(airQuality0, airQuality0);
         assertEquals(airQuality0, airQuality1);
         assertEquals(airQuality2, airQuality3);
+        assertNotEquals(airQuality0, airQuality2);
         assertEquals(airQuality0.hashCode(), airQuality1.hashCode());
         assertEquals(airQuality2.hashCode(), airQuality3.hashCode());
     }

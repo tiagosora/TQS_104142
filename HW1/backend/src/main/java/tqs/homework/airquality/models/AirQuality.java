@@ -25,25 +25,27 @@ public class AirQuality {
     }
 
     public String airQualityMeter(String airQualityIndex) {
-        if(airQualityIndex==null){
-            return "Undefined";           
+        try {
+            Long aqi = Long.parseLong(airQualityIndex);
+            if (aqi < 0) {
+                return null;
+            } else if (aqi <= 50) {
+                return "Good";
+            } else if (aqi <= 100) {
+                return "Moderate";
+            } else if (aqi <= 150) {
+                return "Unhealthy for Sensitive Groups";
+            } else if (aqi <= 200) {
+                return "Unhealthy";
+            } else if (aqi <= 300) {
+                return "Very Unhealthy";
+            } else {
+                return "Hazardous";
+            }
+        } catch (NumberFormatException e) {
+            return "Undefined";
         }
-        Long aqi = Long.parseLong(airQualityIndex);
-        if (aqi < 0) {
-            return null;
-        } else if (aqi <= 50) {
-            return "Good";
-        } else if (aqi <= 100) {
-            return "Moderate";
-        } else if (aqi <= 150) {
-            return "Unhealthy for Sensitive Groups";
-        } else if (aqi <= 200) {
-            return "Unhealthy";
-        } else if (aqi <= 300) {
-            return "Very Unhealthy";
-        } else {
-            return "Hazardous";
-        }
+        
     }
 
     // GETS

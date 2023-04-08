@@ -3,6 +3,7 @@ package tqs.homework.airquality.models;
 import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.Arrays;
 
@@ -47,8 +48,11 @@ class LocationTest {
         Location location1 = new Location();
         Location location2 = new Location(code, name, country, geolocation);
         Location location3 = new Location(code, name, country, geolocation);
+        assertNotEquals(0, location0);
+        assertEquals(location0,location0);
         assertEquals(location0,location1);
         assertEquals(location2,location3);
+        assertNotEquals(location0, location2);
         assertEquals(location0.hashCode(), location1.hashCode());
         assertEquals(location2.hashCode(), location3.hashCode());
     }

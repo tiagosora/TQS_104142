@@ -2,12 +2,15 @@ package tqs.homework.airquality.cache;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -35,9 +38,23 @@ class CacheTest {
         this.cache.setnHits(2);
         this.cache.setnMisses(3);
 
+        List<CacheData> countries = new ArrayList<>();
+        countries.add(new CacheData());
+        Map<CacheData, Map<CacheData, CacheData>> stations = new HashMap<>();
+        stations.put(new CacheData(), new HashMap<>());
+        Map<CacheData, CacheData> airquality = new HashMap<>();
+        airquality.put(new CacheData(), new CacheData());
+
+        this.cache.setCountriesCache(countries);
+        this.cache.setStationsCache(stations);
+        this.cache.setAirQualityCache(airquality);
+
         assertEquals(1, this.cache.getnRequests());
         assertEquals(2, this.cache.getnHits());
         assertEquals(3, this.cache.getnMisses());
+        assertFalse(this.cache.getCountriesCache().isEmpty());
+        assertFalse(this.cache.getStationsCache().isEmpty());
+        assertFalse(this.cache.getAirQualityCache().isEmpty());
     }
 
     @Test
@@ -110,7 +127,12 @@ class CacheTest {
     void whenEqualsObject_AssertEquals(){
         Cache cache0 = new Cache();
         Cache cache1 = new Cache();
+        Cache cache2 = new Cache();
+        cache2.setnRequests(1);
+        assertNotEquals(0, cache0);
+        assertEquals(cache0, cache0);
         assertEquals(cache0, cache1);
+        assertNotEquals(cache0, cache2);
         assertEquals(cache0.hashCode(), cache1.hashCode());
     }
 
