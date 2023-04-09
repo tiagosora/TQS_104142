@@ -53,51 +53,51 @@ const App = () => {
       };
 
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 150px)', width: '100%', bgcolor: '#f5f5f5'}}>
-            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', p: 4, bgcolor: 'background.paper', borderRadius: '4px', boxShadow: 2, width: '80%'}}>
-                <Box sx={{paddingTop: '5%' }}>
+        <Box id="boxbody" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 150px)', width: '100%', bgcolor: '#f5f5f5'}}>
+            <Box id="boxcenter" sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', p: 4, bgcolor: 'background.paper', borderRadius: '4px', boxShadow: 2, width: '80%'}}>
+                <Box id="boxleft" sx={{paddingTop: '5%' }}>
                     <Typography variant="h4" sx={{ mb: 2 }}>Air Quality Checker</Typography>
-                    <FormControl fullWidth sx={{ mt: 4, width: '100%'}}>
+                    <FormControl id="dropbox1" fullWidth sx={{ mt: 4, width: '100%'}}>
                         <InputLabel id="select-label-1">Select a country</InputLabel>
-                        <Select labelId="select-label-1" value={selectedOption1} onChange={handleSelect1} label="Select a country" sx={{ minWidth: 200 }}>
-                            <MenuItem value=""><em>Countries</em> </MenuItem>
+                        <Select id="select-1" labelId="select-label-1" value={selectedOption1} onChange={handleSelect1} label="Select a country" sx={{ minWidth: 200 }}>
+                            <MenuItem id="dropbox1none" value=""><em>Countries</em> </MenuItem>
                             {options1.map((option) => (
-                                <MenuItem key={option} value={option}>{option}</MenuItem>
+                                <MenuItem id={"db1-"+option} key={option} value={option}>{option}</MenuItem>
                             ))}
                         </Select>
                     </FormControl>
-                    <FormControl fullWidth sx={{ mt: 2, width: '100%' }}>
+                    <FormControl id="dropbox2" fullWidth sx={{ mt: 2, width: '100%' }}>
                         <InputLabel id="select-label-2">Select a station</InputLabel>
-                        <Select labelId="select-label-2" value={selectedOption2} onChange={handleSelect2} label="Select a station" sx={{ minWidth: 200 }}>
-                            <MenuItem value=""><em>Stations</em></MenuItem>
+                        <Select id="select-2" labelId="select-label-2" value={selectedOption2} onChange={handleSelect2} label="Select a station" sx={{ minWidth: 200 }}>
+                            <MenuItem id="dropbox2none" value=""><em>Stations</em></MenuItem>
                             {Object.entries(options2).map(([key, value]) => (
-                                <MenuItem key={key} value={key}>
+                                <MenuItem id={"db2-"+value} key={key} value={key}>
                                 {value}
                                 </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
-                    <Button variant="contained" color="primary" onClick={handleClick} sx={{ mt: 4 }}>Request Air Quality</Button>
+                    <Button id="button1" variant="contained" color="primary" onClick={handleClick} sx={{ mt: 4 }}>Request Air Quality</Button>
                 </Box>
-                <Box>
+                <Box id="boxrigth">
                     <Typography variant="h5" align="center" sx={{ mb: 3 }}><strong>Station's Response</strong></Typography>
-                    <Paper sx={{ p: 2, mt: 1, height: '470px', width: '600px', overflow: 'auto', whiteSpace: 'pre-wrap', bgcolor: 'background.default', borderRadius: '4px', bgcolor: '#f5f5f5', boxShadow: 2 }}>
-                        <Typography>
+                    <Paper id="paper" sx={{ p: 2, mt: 1, height: '470px', width: '600px', overflow: 'auto', whiteSpace: 'pre-wrap', bgcolor: 'background.default', borderRadius: '4px', bgcolor: '#f5f5f5', boxShadow: 2 }}>
+                        <Typography id="paperContent">
                             <strong>Location</strong><br />
-                            {'\t'}<strong>Code</strong>{'\t'}{'\t'}{jsonObject.location?.code}<br />
-                            {'\t'}<strong>Name</strong>{'\t'}{'\t'}{jsonObject.location?.name}<br />
-                            {'\t'}<strong>Country</strong>{'\t'}{'\t'}{jsonObject.location?.country}<br />
-                            {'\t'}<strong>Geolocation</strong>{'\t'}{jsonObject.location?.geolocation?.join(', ')}
+                            {'\t'}<strong>Code </strong> {'\t'}{'\t'}{jsonObject.location?.code}<br />
+                            {'\t'}<strong>Name </strong> {'\t'}{'\t'}{jsonObject.location?.name}<br />
+                            {'\t'}<strong>Country </strong> {'\t'}{jsonObject.location?.country}<br />
+                            {'\t'}<strong>Geolocation </strong> {'\t'}{jsonObject.location?.geolocation?.join(', ')}
                             <br /><br />
                             <strong>Air Quality</strong><br />
-                            {'\t'}<strong>Air Quality String</strong>{'\t'}{'\t'}{jsonObject.airQuality?.airQualityString}<br />
-                            {'\t'}<strong>Air Quality Index</strong>{'\t'}{'\t'}{jsonObject.airQuality?.airQualityIndex}<br />
-                            {'\t'}<strong>PM2.5</strong>{'\t'}{'\t'}{'\t'}{'\t'}{jsonObject.airQuality?.pm25}<br />
-                            {'\t'}<strong>PM10</strong>{'\t'}{'\t'}{'\t'}{'\t'}{jsonObject.airQuality?.pm10}<br />
-                            {'\t'}<strong>NO2</strong>{'\t'}{'\t'}{'\t'}{'\t'}{jsonObject.airQuality?.no2}<br />
-                            {'\t'}<strong>O3</strong>{'\t'}{'\t'}{'\t'}{'\t'}{'\t'}{jsonObject.airQuality?.o3}<br />
-                            {'\t'}<strong>Water Gauge</strong>{'\t'}{'\t'}{'\t'}{jsonObject.airQuality?.waterGauge}<br />
-                            {'\t'}<strong>Dominent Pollutant</strong>{'\t'}{jsonObject.airQuality?.dominentPolutent}
+                            {'\t'}<strong>Air Quality String</strong> {'\t'}{'\t'}{jsonObject.airQuality?.airQualityString}<br />
+                            {'\t'}<strong>Air Quality Index</strong> {'\t'}{'\t'}{jsonObject.airQuality?.airQualityIndex}<br />
+                            {'\t'}<strong>PM2.5</strong> {'\t'}{'\t'}{'\t'}{'\t'}{jsonObject.airQuality?.pm25}<br />
+                            {'\t'}<strong>PM10</strong> {'\t'}{'\t'}{'\t'}{'\t'}{jsonObject.airQuality?.pm10}<br />
+                            {'\t'}<strong>NO2</strong> {'\t'}{'\t'}{'\t'}{'\t'}{jsonObject.airQuality?.no2}<br />
+                            {'\t'}<strong>O3</strong> {'\t'}{'\t'}{'\t'}{'\t'}{'\t'}{jsonObject.airQuality?.o3}<br />
+                            {'\t'}<strong>Water Gauge</strong> {'\t'}{'\t'}{'\t'}{jsonObject.airQuality?.waterGauge}<br />
+                            {'\t'}<strong>Dominent Pollutant</strong> {'\t'}{jsonObject.airQuality?.dominentPolutent}
                             <br /><br />
                             <strong>Day</strong>{'\t'}{'\t'}{'\t'} {jsonObject.day}<br />
                             <strong>Timestamp</strong>{'\t'} {jsonObject.timestamp}

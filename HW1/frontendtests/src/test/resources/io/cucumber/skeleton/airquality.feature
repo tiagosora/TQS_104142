@@ -6,3 +6,4 @@ Feature: Verify website usability
         And I click to request the air quality
         Then I should see the "Paços de Ferreira, Paços de Ferreira, Portugal" station
         And I should see the air quality data provided by the station
+        Then I close the site
