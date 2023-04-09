@@ -7,15 +7,17 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-const App = () => {
+const App = () => { 
     const [selectedOption1, setSelectedOption1] = useState('');
     const [selectedOption2, setSelectedOption2] = useState('');
     const [options1, setOptions1] = useState([]);
     const [options2, setOptions2] = useState([]);
-    const [jsonObject, setJsonObject] = useState({
-    });
+    const [jsonObject, setJsonObject] = useState({});
+    const [input1, setInput1] = useState('');
+    const [input2, setInput2] = useState('');
   
     useEffect(() => {
         async function fetchOptions1() {
@@ -38,19 +40,36 @@ const App = () => {
             console.error('Error fetching options for the second dropdown:', error);
         }
     };
+    
   
     const handleSelect2 = (event) => {
         setSelectedOption2(event.target.value);
     };
+
+    const handleClear = () => {
+        setSelectedOption1('');
+        setSelectedOption2('');
+        setOptions2([]);
+    };
   
     const handleClick = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/v1/air/${selectedOption2}`);
+            const response = await axios.get(`http://localhost:8080/api/v1/airCode/${selectedOption2}`);
             setJsonObject(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-      };
+    };
+
+    const handleClick2 = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/v1/airGeo/lat/${input1}/lng/${input2}`);
+            setJsonObject(response.data);
+            handleClear();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
     return (
         <Box id="boxbody" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 150px)', width: '100%', bgcolor: '#f5f5f5'}}>
@@ -77,7 +96,18 @@ const App = () => {
                             ))}
                         </Select>
                     </FormControl>
-                    <Button id="button1" variant="contained" color="primary" onClick={handleClick} sx={{ mt: 4 }}>Request Air Quality</Button>
+                    <Button id="button1" variant="contained" color="primary" onClick={handleClick} sx={{ mt: 2 }}>Request Air Quality</Button>
+                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mt: 6 }}>
+                        <FormControl sx={{ mr: 2 }}>
+                            <InputLabel htmlFor="input1"></InputLabel>
+                            <TextField id="input1" value={input1} onChange={(e) => setInput1(e.target.value)} placeholder="Latitude" />
+                        </FormControl>
+                        <FormControl sx={{ mr: 2 }}>
+                            <InputLabel htmlFor="input2"></InputLabel>
+                            <TextField id="input2" value={input2} onChange={(e) => setInput2(e.target.value)} placeholder="Longitude" />
+                        </FormControl>
+                        <Button variant="contained" color="primary" onClick={handleClick2}>Request Location</Button>
+                    </Box>
                 </Box>
                 <Box id="boxrigth">
                     <Typography variant="h5" align="center" sx={{ mb: 3 }}><strong>Station's Response</strong></Typography>
