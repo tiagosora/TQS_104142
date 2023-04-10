@@ -106,7 +106,7 @@ const App = () => {
                             <InputLabel htmlFor="input2"></InputLabel>
                             <TextField id="input2" value={input2} onChange={(e) => setInput2(e.target.value)} placeholder="Longitude" />
                         </FormControl>
-                        <Button variant="contained" color="primary" onClick={handleClick2}>Request Location</Button>
+                        <Button id="button2" variant="contained" color="primary" onClick={handleClick2}>Request Location</Button>
                     </Box>
                 </Box>
                 <Box id="boxrigth">
