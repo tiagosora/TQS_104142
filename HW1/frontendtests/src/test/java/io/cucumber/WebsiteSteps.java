@@ -76,4 +76,20 @@ public class WebsiteSteps {
 	public void i_close_the_site(){
 		driver.quit();
 	}
+
+	@And("I enter {string} as latitude")
+	public void i_enter_as_latitude(String string){
+		driver.findElement(By.id("input1")).click();
+		driver.findElement(By.id("input1")).sendKeys(string);
+	}
+
+	@And("I enter {string} as longitude")
+	public void i_enter_as_longitude(String string){
+		driver.findElement(By.id("input2")).sendKeys(string);
+	}
+
+	@And("I click to request that location air quality")
+	public void i_click_to_request_that_location_air_quality(){
+		driver.findElement(By.id("button2")).click();
+	}
 }
