@@ -8,7 +8,7 @@ Feature: Verify website usability
         And I should see the air quality data provided by the station
         Then I close the site
 
-    Scenario: Navigate to the website and check air quality for a Portuguese's station
+    Scenario: Navigate to the website and check air quality using geolocation
         When I navigate to 'http://localhost:3000/'
         And I enter '40.756666666667' as latitude
         And I enter '-8.5727777777778' as longitude
