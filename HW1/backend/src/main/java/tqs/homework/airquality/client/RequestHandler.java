@@ -19,8 +19,6 @@ public class RequestHandler {
 
     private IHttpClient httpClient = new HttpClient();
 
-    // GETS
-
     public JSONObject findCountries() throws URISyntaxException, IOException, org.json.simple.parser.ParseException{
 
         URIBuilder uriBuilder = new URIBuilder(API_1_BASEURL+"map/bounds");
@@ -49,8 +47,6 @@ public class RequestHandler {
 
     public JSONObject findAirQualityByGeo(String lat, String lng) throws URISyntaxException, IOException, ParseException {
 
-
-        //https://api.waqi.info/feed/geo:41.274166666667;-8.3761111111111/?token=ba9aaf9bf6048e6ebe7d7e66c334bd243b5a658e
         URIBuilder uriBuilder = new URIBuilder(API_1_BASEURL+"feed/geo:"+lat+";"+lng+"/");
         uriBuilder.addParameter(USER_ID, API_1_Q);
         
