@@ -48,7 +48,11 @@ class LocalAirQualityServiceTest {
 
         String response2 = "{\"status\":\"ok\",\"data\":{\"aqi\":28,\"idx\":8372,\"city\":{\"geo\":[41.274166666667,-8.3761111111111],\"name\":\"Paços de Ferreira, Paços de Ferreira, Portugal\"},\"dominentpol\":\"o3\",\"iaqi\":{\"h\":{\"v\":23},\"no2\":{\"v\":5.7},\"o3\":{\"v\":27.7},\"p\":{\"v\":1014.8},\"pm10\":{\"v\":2},\"pm25\":{\"v\":39},\"t\":{\"v\":21.6},\"w\":{\"v\":8.2},\"wg\":{\"v\":8.2}},\"time\":{\"s\":\"2023-04-06 11:00:00\",\"v\":1680778800}}}";
         JSONObject airQualityJsonObject = (JSONObject)new JSONParser().parse(response2);
-        Mockito.when(requestHandler.findAirQuality("8383")).thenReturn(airQualityJsonObject);
+        Mockito.when(requestHandler.findAirQualityByCode("8383")).thenReturn(airQualityJsonObject);
+
+        String response3 = "{\"status\":\"ok\",\"data\":{\"aqi\":28,\"idx\":8372,\"city\":{\"geo\":[41.274166666667,-8.3761111111111],\"name\":\"Paços de Ferreira, Paços de Ferreira, Portugal\"},\"dominentpol\":\"o3\",\"iaqi\":{\"h\":{\"v\":23},\"no2\":{\"v\":5.7},\"o3\":{\"v\":27.7},\"p\":{\"v\":1014.8},\"pm10\":{\"v\":2},\"pm25\":{\"v\":39},\"t\":{\"v\":21.6},\"w\":{\"v\":8.2},\"wg\":{\"v\":8.2}},\"time\":{\"s\":\"2023-04-06 11:00:00\",\"v\":1680778800}}}";
+        JSONObject airQuality3JsonObject = (JSONObject)new JSONParser().parse(response3);
+        Mockito.when(requestHandler.findAirQualityByGeo("41.274166666667", "-8.3761111111111")).thenReturn(airQuality3JsonObject);
 
     }
 
@@ -79,19 +83,37 @@ class LocalAirQualityServiceTest {
     }
 
     @Test 
-    void whenGetAirQualityByStation_thenReturnAQI() throws URISyntaxException, IOException, ParseException{
+    void whenGetAirQualityByCode_thenReturnLocalAirQuality() throws URISyntaxException, IOException, ParseException{
         Double [] geolocation = {41.274166666667, -8.3761111111111};
         AirQuality airQuality = new AirQuality("28", "39", "2", "5.7", "27.7", "8.2", "o3");
         Location location = new Location("8372", "Paços de Ferreira, Paços de Ferreira, Portugal", "Portugal", geolocation);
         LocalAirQuality localAirQuality = new LocalAirQuality(location, airQuality, "2023-04-06 11:00:00", "1680778800");
 
-        assertEquals(localAirQuality.toString(), localAirQualityService.getAirQuality("8383").toString());
-        assertEquals(localAirQuality.toString(), localAirQualityService.getAirQuality("8383").toString());
+        assertEquals(localAirQuality.toString(), localAirQualityService.getAirQualityByCode("8383").toString());
+        assertEquals(localAirQuality.toString(), localAirQualityService.getAirQualityByCode("8383").toString());
+    }
+
+    @Test 
+    void whenGetAirQualityByGeo_thenReturnLocalAirQuality() throws URISyntaxException, IOException, ParseException{
+        Double [] geolocation = {41.274166666667, -8.3761111111111};
+        AirQuality airQuality = new AirQuality("28", "39", "2", "5.7", "27.7", "8.2", "o3");
+        Location location = new Location("8372", "Paços de Ferreira, Paços de Ferreira, Portugal", "Portugal", geolocation);
+        LocalAirQuality localAirQuality = new LocalAirQuality(location, airQuality, "2023-04-06 11:00:00", "1680778800");
+
+        assertEquals(localAirQuality.toString(), localAirQualityService.getAirQualityByGeo("41.274166666667", "-8.3761111111111").toString());
+        assertEquals(localAirQuality.toString(), localAirQualityService.getAirQualityByGeo("41.274166666667", "-8.3761111111111").toString());
     }
 
     @Test
     void whenGetAirQualityByInvalidStation_thenReturnsErrorMessage() throws URISyntaxException, IOException, ParseException{
         LocalAirQuality localAirQuality = new LocalAirQuality();
-        assertEquals(localAirQuality, localAirQualityService.getAirQuality("Invalid"));
+        assertEquals(localAirQuality, localAirQualityService.getAirQualityByCode("Invalid"));
+    }
+
+    @Test
+    void whenGetAirQualityByInvalidGeo_thenReturnsErrorMessage() throws URISyntaxException, IOException, ParseException{
+        LocalAirQuality localAirQuality = new LocalAirQuality();
+        assertEquals(localAirQuality, localAirQualityService.getAirQualityByGeo("A", "B"));
+        assertEquals(localAirQuality, localAirQualityService.getAirQualityByGeo("40.1", "40.1"));
     }
 }

@@ -28,7 +28,7 @@ public class AirQuality {
         try {
             Long aqi = Long.parseLong(airQualityIndex);
             if (aqi < 0) {
-                return null;
+                return "Undefined";
             } else if (aqi <= 50) {
                 return "Good";
             } else if (aqi <= 100) {

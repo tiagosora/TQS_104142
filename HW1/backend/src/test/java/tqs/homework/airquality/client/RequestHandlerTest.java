@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,11 +27,6 @@ class RequestHandlerTest {
     private static final String RESPONSE = "{\"status\":\"ok\"}";
     private static final String USER_ID = ConfigUtils.getPropertyFromConfig("id");
     private static final String API_1_Q = ConfigUtils.getPropertyFromConfig("api.1.q");
-
-    @BeforeEach
-    void setUp() throws IOException{
-        
-    }
 
     @Test
     void whenFindCountries_HandleRequestCorrecly() throws URISyntaxException, IOException, ParseException{
@@ -57,11 +51,21 @@ class RequestHandlerTest {
     }
 
     @Test
-    void whenFindAirQuality_HandleRequestCorrecly() throws URISyntaxException, IOException, ParseException{
+    void whenFindAirQualityByCode_HandleRequestCorrecly() throws URISyntaxException, IOException, ParseException{
         String request = "https://api.waqi.info/feed/@8372/?"+USER_ID+"="+API_1_Q;
         Mockito.when(httpClient.doHttpGet(request)).thenReturn(RESPONSE);
 
-        JSONObject result = requestHandler.findAirQuality("8372");
+        JSONObject result = requestHandler.findAirQualityByCode("8372");
+        JSONObject expectedResult = (JSONObject)(new JSONParser().parse(RESPONSE));
+        assertEquals(expectedResult, result);
+    }
+
+    @Test
+    void whenFindAirQualityByGeo_HandleRequestCorrecly() throws URISyntaxException, IOException, ParseException{
+        String request = "https://api.waqi.info/feed/geo:41.274166666667;-8.3761111111111/?"+USER_ID+"="+API_1_Q;
+        Mockito.when(httpClient.doHttpGet(request)).thenReturn(RESPONSE);
+
+        JSONObject result = requestHandler.findAirQualityByGeo("41.274166666667", "-8.3761111111111");
         JSONObject expectedResult = (JSONObject)(new JSONParser().parse(RESPONSE));
         assertEquals(expectedResult, result);
     }

@@ -44,9 +44,18 @@ public class LocalAirQualityController {
         return ResponseEntity.ok().body(data);
     }
 
-    @GetMapping("air/{stationCode}")
-    public ResponseEntity<LocalAirQuality> getAirQuality(@PathVariable(value="stationCode") String stationCode) throws IOException, URISyntaxException, org.json.simple.parser.ParseException{
-        LocalAirQuality localAirQuality = localAirQualityService.getAirQuality(stationCode);
+    @GetMapping("airCode/{stationCode}")
+    public ResponseEntity<LocalAirQuality> getAirQualityByCode(@PathVariable(value="stationCode") String stationCode) throws IOException, URISyntaxException, org.json.simple.parser.ParseException{
+        LocalAirQuality localAirQuality = localAirQualityService.getAirQualityByCode(stationCode);
+        if (localAirQuality.getAirQuality() == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(localAirQuality);
+    }
+    
+    @GetMapping("airGeo/lat/{lat}/lng/{lng}")
+    public ResponseEntity<LocalAirQuality> getAirQualityByGeolocation(@PathVariable(value="lat") String lat, @PathVariable(value="lng") String lng) throws IOException, URISyntaxException, org.json.simple.parser.ParseException{
+        LocalAirQuality localAirQuality = localAirQualityService.getAirQualityByGeo(lat, lng);
         if (localAirQuality.getAirQuality() == null){
             return ResponseEntity.notFound().build();
         }

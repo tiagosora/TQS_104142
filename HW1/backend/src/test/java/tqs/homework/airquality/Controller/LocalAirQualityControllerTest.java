@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -41,7 +40,6 @@ class LocalAirQualityControllerTest {
     private LocalAirQualityService service;
 
     @Test
-    @DisplayName("Calling /api/v1/countries, the API should return all mapped countries.")
     void whenGetCountries_thenReturnCountryList() throws Exception {
         List<String> countriesList = new ArrayList<String>(Arrays.asList("Alaska","Anshan","Anyang","Argentina","Austria","Beijing","Benxi","Brazil","California","Canada","Chaoyang","Chile","Colombia","CzechRepublic","Dandong","Denmark","Ecuador","Finland","France","Fushun","Fuxin","Georgia","Germany","Guatemala","HChMinh","HNi","Horsta","HuangdaoDistrict","Huangshan","Hubei","Huludao","Iceland","India","Iran","IranHSE","Ireland","Italy","Japan","Jiaozuo","Jinzhou","Jordan","JuCounty","Kaifeng","KenliDistrict","Liaoyang","LijinCounty","LisongDistrict","Luxembourg","Macedonia","Malaysia","Mexico","Nanping","Nepal","Ningbo","Norway","Panjin","Peru","Philippines","Poland","Portugal","Romania","Russia","Serbia","Shenyang","Slovakia","SouthAfrica","SouthKorea","SouthKoreaDMZ","Spain","Sudan","Sweden","Texas","Thailand","Tieling","UAE","USA","Utah","Vietnam","Xinyang","Yingkou","Zhengzhou"));
 
@@ -61,7 +59,6 @@ class LocalAirQualityControllerTest {
     }
 
     @Test
-    @DisplayName("Calling /api/v1/stations/Portugal, the API should return all mapped stations that match Portugal.")
     void whenGetStations_thenStationsListForCountry() throws Exception {
 
         HashMap<String, String> stationsPortugal = new HashMap<>();
@@ -85,8 +82,7 @@ class LocalAirQualityControllerTest {
     }
 
     @Test
-    @DisplayName("Calling /api/v1/air, the API should return the air quality for that station.")
-    void whenGetAirQuality_thenReturnAirQualityForStations() throws Exception {
+    void whenGetAirQuality_thenReturnAirQualityFromStations() throws Exception {
 
         // 8372, Paços de Ferreira, Paços de Ferreira, Portugal
         Double[] geolocation = {41.274166666667,-8.3761111111111};
@@ -94,10 +90,10 @@ class LocalAirQualityControllerTest {
         AirQuality airQuality = new AirQuality("37", "39", "2", "3.1", "37", "10", "o3");
         LocalAirQuality localAirQuality = new LocalAirQuality(location, airQuality, "day", "timestamp");
         
-        when(service.getAirQuality("8372")).thenReturn(localAirQuality);
+        when(service.getAirQualityByCode("8372")).thenReturn(localAirQuality);
 
         mvc.perform(
-            get("/api/v1/air/8372")
+            get("/api/v1/airCode/8372")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpectAll(
                 content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON),
@@ -116,7 +112,36 @@ class LocalAirQualityControllerTest {
     }
 
     @Test
-    @DisplayName("")
+    void whenGetAirQuality_thenReturnAirQualityFromGeolocation() throws Exception {
+
+        // 8372, Paços de Ferreira, Paços de Ferreira, Portugal
+        Double[] geolocation = {41.274166666667,-8.3761111111111};
+        Location location = new Location("8372", "Paços de Ferreira, Paços de Ferreira, Portugal", "Portugal", geolocation);
+        AirQuality airQuality = new AirQuality("37", "39", "2", "3.1", "37", "10", "o3");
+        LocalAirQuality localAirQuality = new LocalAirQuality(location, airQuality, "day", "timestamp");
+        
+        when(service.getAirQualityByGeo("41.274166666667", "-8.3761111111111")).thenReturn(localAirQuality);
+
+        mvc.perform(
+            get("/api/v1/airGeo/lat/41.274166666667/lng/-8.3761111111111")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpectAll(
+                content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON),
+                jsonPath("$.location.code", is("8372")),
+                jsonPath("$.location.name", is("Paços de Ferreira, Paços de Ferreira, Portugal")),
+                jsonPath("$.location.country", is("Portugal")),
+                jsonPath("$.airQuality.airQualityString", is("Good")),
+                jsonPath("$.airQuality.airQualityIndex", is("37")),
+                jsonPath("$.airQuality.pm25", is("39")),
+                jsonPath("$.airQuality.pm10", is("2")),
+                jsonPath("$.airQuality.no2", is("3.1")),
+                jsonPath("$.airQuality.o3", is("37")),
+                jsonPath("$.airQuality.waterGauge", is("10")),
+                jsonPath("$.airQuality.dominentPolutent", is("o3")))
+            ;
+    }
+
+    @Test
     void whenGetCache_theReturnCache() throws Exception{
         Cache cache = new Cache();
 
@@ -132,7 +157,8 @@ class LocalAirQualityControllerTest {
                 jsonPath("$.nMisses", is(0)),
                 jsonPath("$.countriesCache", is(new ArrayList<>())),
                 jsonPath("$.stationsCache", is(new HashMap<>())),
-                jsonPath("$.airQualityCache", is(new HashMap<>()))
+                jsonPath("$.airQualityCodeCache", is(new HashMap<>())),
+                jsonPath("$.airQualityGeoCache", is(new HashMap<>()))
             )
             ;
     }

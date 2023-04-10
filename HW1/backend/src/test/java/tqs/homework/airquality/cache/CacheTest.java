@@ -28,7 +28,8 @@ class CacheTest {
         assertEquals(0, this.cache.getnMisses());
         assertTrue(this.cache.getCountriesCache().isEmpty());
         assertTrue(this.cache.getStationsCache().isEmpty());
-        assertTrue(this.cache.getAirQualityCache().isEmpty());
+        assertTrue(this.cache.getAirQualityCodeCache().isEmpty());
+        assertTrue(this.cache.getAirQualityGeoCache().isEmpty());
     }
 
     @Test
@@ -42,19 +43,23 @@ class CacheTest {
         countries.add(new CacheData());
         Map<CacheData, Map<CacheData, CacheData>> stations = new HashMap<>();
         stations.put(new CacheData(), new HashMap<>());
-        Map<CacheData, CacheData> airquality = new HashMap<>();
-        airquality.put(new CacheData(), new CacheData());
+        Map<CacheData, CacheData> airqualitycode = new HashMap<>();
+        airqualitycode.put(new CacheData(), new CacheData());
+        Map<List<CacheData>, CacheData> airqualitygeo = new HashMap<>();
+        airqualitygeo.put(new ArrayList<>(), new CacheData());
 
         this.cache.setCountriesCache(countries);
         this.cache.setStationsCache(stations);
-        this.cache.setAirQualityCache(airquality);
+        this.cache.setAirQualityCodeCache(airqualitycode);
+        this.cache.setAirQualityGeoCache(airqualitygeo);
 
         assertEquals(1, this.cache.getnRequests());
         assertEquals(2, this.cache.getnHits());
         assertEquals(3, this.cache.getnMisses());
         assertFalse(this.cache.getCountriesCache().isEmpty());
         assertFalse(this.cache.getStationsCache().isEmpty());
-        assertFalse(this.cache.getAirQualityCache().isEmpty());
+        assertFalse(this.cache.getAirQualityCodeCache().isEmpty());
+        assertFalse(this.cache.getAirQualityGeoCache().isEmpty());
     }
 
     @Test
@@ -107,20 +112,37 @@ class CacheTest {
     }
 
     @Test
-    void whenAddAirQualityMapToCache_SaveNewMap() {
+    void whenAddAirQualityCodeMapToCache_SaveNewMap() {
         this.cache = new Cache();
         String country = "AveiroStationCode", timestamp = "TestTime";
         LocalAirQuality aveiroAirQuality = new LocalAirQuality();
         aveiroAirQuality.setTimestamp(timestamp);
 
-        this.cache.addAirQualityCache(country, aveiroAirQuality);
-        assertFalse(this.cache.getAirQualityCache().isEmpty());
-        CacheData cachedData = this.cache.getAirQualityCacheFromStation(country);
+        this.cache.addAirQualityCodeCache(country, aveiroAirQuality);
+        assertFalse(this.cache.getAirQualityCodeCache().isEmpty());
+        CacheData cachedData = this.cache.getAirQualityCodeCacheFromStation(country);
         
         assertEquals(timestamp, ((LocalAirQuality)cachedData.getData()).getTimestamp());
 
-        this.cache.clearAirQualityCache(country);;
-        assertTrue(this.cache.getAirQualityCache().isEmpty());
+        this.cache.clearAirQualityCodeCache(country);;
+        assertTrue(this.cache.getAirQualityCodeCache().isEmpty());
+    }
+
+    @Test
+    void whenAddAirQualityGeoMapToCache_SaveNewMap() {
+        this.cache = new Cache();
+        String lat = "A", lng = "B", timestamp = "TestTime";
+        LocalAirQuality aveiroAirQuality = new LocalAirQuality();
+        aveiroAirQuality.setTimestamp(timestamp);
+
+        this.cache.addAirQualityGeoCache(lat, lng, aveiroAirQuality);
+        assertFalse(this.cache.getAirQualityGeoCache().isEmpty());
+        CacheData cachedData = this.cache.getAirQualityGeoCacheFromStation(lat, lng);
+        
+        assertEquals(timestamp, ((LocalAirQuality)cachedData.getData()).getTimestamp());
+
+        this.cache.clearAirQualityGeoCache(lat, lng);
+        assertTrue(this.cache.getAirQualityCodeCache().isEmpty());
     }
 
     @Test
@@ -136,12 +158,10 @@ class CacheTest {
         assertEquals(cache0.hashCode(), cache1.hashCode());
     }
 
-    
-
     @Test
     void testToString(){
         this.cache = new Cache();
-        assertEquals(cache.toString(), "{"+"nRequests='"+0+"', "+"nHits='"+0+"', "+"nMisses='"+0+"', "+"countriesCache='"+(new ArrayList<>()).toString()+"', "+"stationsCache='"+(new HashMap<>()).toString()+"', "+"airQualityCache='"+(new HashMap<>()).toString()+"'"+"}");
+        assertEquals(cache.toString(), "{"+"nRequests='"+0+"', "+"nHits='"+0+"', "+"nMisses='"+0+"', "+"countriesCache='"+(new ArrayList<>()).toString()+"', "+"stationsCache='"+(new HashMap<>()).toString()+"', "+"airQualityCodeCache='"+(new HashMap<>()).toString()+"', "+"airQualityGeoCache='"+(new HashMap<>()).toString()+"'"+"}");
         
     }
 }

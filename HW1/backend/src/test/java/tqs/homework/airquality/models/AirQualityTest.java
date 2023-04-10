@@ -49,6 +49,8 @@ class AirQualityTest {
     @Test
     void whenSetNewAirQualityIndex_thenSetNewAirQualityString(){
         airQuality = new AirQuality();
+        airQuality.setAirQualityIndex("-1");
+        assertEquals("Undefined", airQuality.getAirQualityString());
         airQuality.setAirQualityIndex("25");
         assertEquals("Good", airQuality.getAirQualityString());
         airQuality.setAirQualityIndex("75");
@@ -61,6 +63,10 @@ class AirQualityTest {
         assertEquals("Very Unhealthy", airQuality.getAirQualityString());
         airQuality.setAirQualityIndex("350");
         assertEquals("Hazardous", airQuality.getAirQualityString());
+        airQuality.setAirQualityIndex("350");
+        assertEquals("Hazardous", airQuality.getAirQualityString());
+        airQuality.setAirQualityIndex("Invalid");
+        assertEquals("Undefined", airQuality.getAirQualityString());
     }
 
     @Test

@@ -37,7 +37,8 @@ public class LocalAirQualityService {
         List<String> countriesList = new ArrayList<>();
         if(!(cache.getCountriesCache().isEmpty())){
             cache.newHit();
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Countries from Cache");
+            String log = "Fetched Countries from Cache";
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, log);
             List<CacheData> cachedData = cache.getCountriesCache();
             cachedData.forEach((CacheData data) -> 
                 countriesList.add((String)data.getData())
@@ -45,7 +46,8 @@ public class LocalAirQualityService {
             
         } else {
             cache.newMiss();
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Countries from API");
+            String log = "Fetched Countries from API";
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, log);
             
             JSONObject jsonObject = requestHandler.findCountries();
 
@@ -78,7 +80,8 @@ public class LocalAirQualityService {
         Map<String, String> stationsList = new HashMap<>();
         if(!(cache.getStationsCacheFromCountry(country).isEmpty())){
             cache.newHit();
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Stations for {} from Cache",country);
+            String log = String.format("Fetched Stations for %s from Cache", country);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, log);
             Map<CacheData, CacheData> cachedData = cache.getStationsCacheFromCountry(country);
             
             for(Entry<CacheData, CacheData> entry : cachedData.entrySet()){
@@ -89,8 +92,8 @@ public class LocalAirQualityService {
             }
         } else {
             cache.newMiss();
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Stations for {} from API",country);
-
+            String log = String.format("Fetched Stations for %s from API", country);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, log);
             JSONObject jsonObject = requestHandler.findStations(country);
 
             if (jsonObject == null){
@@ -113,26 +116,71 @@ public class LocalAirQualityService {
         return stationsList;
     }
 
-    public LocalAirQuality getAirQuality(String stationCode) throws URISyntaxException, IOException, ParseException {
+    public LocalAirQuality getAirQualityByCode(String stationCode) throws URISyntaxException, IOException, ParseException {
         cache.newRequest();
-        LocalAirQuality localAirQuality = null;
-        if(cache.getAirQualityCacheFromStation(stationCode) != null){
+        LocalAirQuality localAirQuality = new LocalAirQuality();
+        try {
+            Long.parseLong(stationCode);
+        } catch(NumberFormatException e){
+            return localAirQuality;
+        }
+        if(cache.getAirQualityCodeCacheFromStation(stationCode) != null){
             cache.newHit();
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Air Quality for {} from Cache",stationCode);
-            CacheData cachedData = cache.getAirQualityCacheFromStation(stationCode);
+            String log = String.format("Fetched Air Quality for %s from Cache", stationCode);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, log);
+            CacheData cachedData = cache.getAirQualityCodeCacheFromStation(stationCode);
             localAirQuality = (LocalAirQuality)cachedData.getData();
         } else {
             cache.newMiss();
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Fetched Air Quality for for {} from from API",stationCode);
+            String log = String.format("Fetched Air Quality for %s from API", stationCode);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, log);
 
-            JSONObject jsonObject = requestHandler.findAirQuality(stationCode);
+            JSONObject jsonObject = requestHandler.findAirQualityByCode(stationCode);
 
-            if (jsonObject == null){
-                return new LocalAirQuality();
+            localAirQuality = processAirQualityFromJson(jsonObject);
+            if (localAirQuality.getAirQuality() != null) {
+                this.cache.addAirQualityCodeCache(stationCode, localAirQuality);
             }
+        }
+        return localAirQuality;
+    }
+    
+    public LocalAirQuality getAirQualityByGeo(String lat, String lng) throws URISyntaxException, IOException, ParseException {
+        cache.newRequest();
+        LocalAirQuality localAirQuality = new LocalAirQuality();
+        try {
+            Double.parseDouble(lat);
+            Double.parseDouble(lng);
+        } catch(NumberFormatException e){
+            return localAirQuality;
+        }
+        if(cache.getAirQualityGeoCacheFromStation(lat, lng) != null){
+            cache.newHit();
+            String log = String.format("Fetched Air Quality for [%s, %s] from Cache", lat, lng);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, log);
+            CacheData cachedData = cache.getAirQualityGeoCacheFromStation(lat, lng);
+            localAirQuality = (LocalAirQuality)cachedData.getData();
+        } else {
+            cache.newMiss();
+            String log = String.format("Fetched Air Quality for [%s, %s] from API", lat, lng);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, log);
+
+            JSONObject jsonObject = requestHandler.findAirQualityByGeo(lat, lng);
+
+            localAirQuality = processAirQualityFromJson(jsonObject);
+            if (localAirQuality.getAirQuality() != null){
+                this.cache.addAirQualityGeoCache(lat, lng, localAirQuality);
+            }
+        }
+        return localAirQuality;
+    }
+
+    public LocalAirQuality processAirQualityFromJson(JSONObject jsonObject)  {
+        try{
+
+            LocalAirQuality localAirQuality;
 
             JSONObject dataObject = (JSONObject)jsonObject.get("data");
-
             String locationCode = Long.toString((Long)dataObject.get("idx"));
             String aqi = Long.toString((Long)dataObject.get("aqi"));
 
@@ -147,26 +195,11 @@ public class LocalAirQualityService {
             String dominentPolutent = (String)dataObject.get("dominentpol");
 
             JSONObject iaqiObject = (JSONObject)dataObject.get("iaqi");
-            String pm25;
-            String pm10;
-            String no2;
-            String o3;
-            String wg;
-            try {
-                pm25 = ((Number)((JSONObject)iaqiObject.get("pm25")).get("v")).toString();
-            } catch (NullPointerException e){ pm25 = ""; }
-            try {
-                pm10 = ((Number)((JSONObject)iaqiObject.get("pm10")).get("v")).toString();
-            } catch (NullPointerException e){ pm10 = ""; }
-            try {
-                no2 = ((Number)((JSONObject)iaqiObject.get("no2")).get("v")).toString();
-            } catch (NullPointerException e){ no2 = ""; }
-            try {
-                o3 = ((Number)((JSONObject)iaqiObject.get("o3")).get("v")).toString();
-            } catch (NullPointerException e){ o3 = ""; }
-            try {
-                wg = ((Number)((JSONObject)iaqiObject.get("wg")).get("v")).toString();
-            } catch (NullPointerException e){ wg = ""; }
+            String pm25 = processAIQIObject(iaqiObject, "pm25");
+            String pm10 = processAIQIObject(iaqiObject, "pm10");
+            String no2 = processAIQIObject(iaqiObject, "no2");
+            String o3 = processAIQIObject(iaqiObject, "o3");
+            String wg = processAIQIObject(iaqiObject, "wg");
 
             JSONObject timeObject = (JSONObject)dataObject.get("time");
             String day = (String)timeObject.get("s");
@@ -176,8 +209,18 @@ public class LocalAirQualityService {
             AirQuality airQuality = new AirQuality(aqi, pm25, pm10, no2, o3, wg, dominentPolutent);
             localAirQuality = new LocalAirQuality(location, airQuality, day, timestamp);
 
-            this.cache.addAirQualityCache(stationCode, localAirQuality);
+            return localAirQuality;
+
+        } catch (NullPointerException exception){
+            return new LocalAirQuality();
         }
-        return localAirQuality;
+    }
+
+    public String processAIQIObject(JSONObject iaqiObject, String attribute){
+        try {
+            return ((Number)((JSONObject)iaqiObject.get(attribute)).get("v")).toString();
+        } catch (NullPointerException e){ 
+            return "";
+        }
     }
 }

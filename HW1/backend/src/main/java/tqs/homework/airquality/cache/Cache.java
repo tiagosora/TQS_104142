@@ -18,7 +18,8 @@ public class Cache {
     private int nMisses;
     private List<CacheData> countriesCache;
     private Map<CacheData, Map<CacheData, CacheData>> stationsCache;
-    private Map<CacheData, CacheData> airQualityCache;
+    private Map<CacheData, CacheData> airQualityCodeCache;
+    private Map<List<CacheData>, CacheData> airQualityGeoCache;
 
     public Cache() {
         this.nRequests = 0;
@@ -26,7 +27,8 @@ public class Cache {
         this.nMisses = 0;
         this.countriesCache = new ArrayList<>();
         this.stationsCache = new HashMap<>();
-        this.airQualityCache = new HashMap<>();
+        this.airQualityCodeCache = new HashMap<>();
+        this.airQualityGeoCache = new HashMap<>();
     }
 
     // GETS
@@ -46,8 +48,11 @@ public class Cache {
     public Map<CacheData, Map<CacheData, CacheData>> getStationsCache() {
         return stationsCache;
     }
-    public Map<CacheData, CacheData> getAirQualityCache() {
-        return airQualityCache;
+    public Map<CacheData, CacheData> getAirQualityCodeCache() {
+        return airQualityCodeCache;
+    }
+    public Map<List<CacheData>, CacheData> getAirQualityGeoCache() {
+        return airQualityGeoCache;
     }
 
     // SETS
@@ -61,14 +66,17 @@ public class Cache {
     public void setnMisses(int nMisses) {
         this.nMisses = nMisses;
     }
-    public void setAirQualityCache(Map<CacheData, CacheData> airQualityCache) {
-        this.airQualityCache = airQualityCache;
+    public void setAirQualityCodeCache(Map<CacheData, CacheData> airQualityCodeCache) {
+        this.airQualityCodeCache = airQualityCodeCache;
     }
     public void setCountriesCache(List<CacheData> countriesCache) {
         this.countriesCache = countriesCache;
     }
     public void setStationsCache(Map<CacheData, Map<CacheData, CacheData>> stationsCache) {
         this.stationsCache = stationsCache;
+    }
+    public void setAirQualityGeoCache(Map<List<CacheData>, CacheData> airQualityGeoCache) {
+        this.airQualityGeoCache = airQualityGeoCache;
     }
 
     // CUSTOMS
@@ -99,7 +107,8 @@ public class Cache {
         );
     }
     protected void clearCountriesCache() {
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Clearing Cache from Countries.");
+        String log = "Clearing Cache from Countries.";
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, log);
         this.countriesCache = new ArrayList<>();
     }
 
@@ -123,7 +132,9 @@ public class Cache {
         );
     }
     protected void clearStationsCache(String country) {
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Clearing Cache from Stations: {}", country);
+
+        String log = String.format("Clearing Cache from Stations: %s", country);
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, log);
         for (Entry<CacheData, Map<CacheData, CacheData>> entry : this.stationsCache.entrySet()){
             if (country.equals(entry.getKey().getData())) {
                 this.stationsCache.remove(entry.getKey());
@@ -140,32 +151,70 @@ public class Cache {
         }
         return new HashMap<>();
     }
-    public void addAirQualityCache(String stationCode, LocalAirQuality cache){
-        this.airQualityCache.putIfAbsent(new CacheData(stationCode), new CacheData(cache));
+    public void addAirQualityCodeCache(String stationCode, LocalAirQuality cache){
+        this.airQualityCodeCache.putIfAbsent(new CacheData(stationCode), new CacheData(cache));
         new java.util.Timer().schedule(
             new java.util.TimerTask() {
                 @Override
                 public void run() {
-                    clearAirQualityCache(stationCode);
+                    clearAirQualityCodeCache(stationCode);
                 }
             },
             60000
         );
     }
-    protected void clearAirQualityCache(String stationCode) {
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Clearing Cache from Air Quality: {}", stationCode);
-        for (Entry<CacheData, CacheData> entry : this.airQualityCache.entrySet()){
-            if (stationCode.equals(entry.getKey().getData())) {
-                this.airQualityCache.remove(entry.getKey());
+    protected void clearAirQualityCodeCache(String stationCode) {
+        String log = String.format("Clearing Cache from Air Quality: %s", stationCode);
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, log);
+        for (Entry<CacheData, CacheData> entry : this.airQualityCodeCache.entrySet()){
+            CacheData data = entry.getKey();
+            if (stationCode.equals(data.getData())) {
+                this.airQualityCodeCache.remove(data);
             }
         }
     }
 
-    public CacheData getAirQualityCacheFromStation(String stationCode){
-        for (Entry<CacheData, CacheData> entry : this.airQualityCache.entrySet()){
+    public void addAirQualityGeoCache(String lat, String lng, LocalAirQuality cache){
+        List<CacheData> geolocation = new ArrayList<>();
+        geolocation.add(new CacheData(lat));
+        geolocation.add(new CacheData(lng));
+        this.airQualityGeoCache.putIfAbsent(geolocation, new CacheData(cache));
+        new java.util.Timer().schedule(
+            new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    clearAirQualityGeoCache(lat, lng);
+                }
+            },
+            60000
+        );
+    }
+    protected void clearAirQualityGeoCache(String lat, String lng) {
+        String log = String.format("Clearing Cache from Air Quality: [%s, %s]", lat, lng);
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, log);
+        for (Entry<List<CacheData>, CacheData> entry : this.airQualityGeoCache.entrySet()){
+            List<CacheData> key = entry.getKey();
+            if(key.get(0).getData().equals(lat) && key.get(1).getData().equals(lng)){
+                this.airQualityGeoCache.remove(key);
+            }
+        }
+    }
+
+    public CacheData getAirQualityCodeCacheFromStation(String stationCode){
+        for (Entry<CacheData, CacheData> entry : this.airQualityCodeCache.entrySet()){
             CacheData data = entry.getKey();
             if(data.getData().equals(stationCode)){
-                return this.airQualityCache.get(data);
+                return this.airQualityCodeCache.get(data);
+            }
+        }
+        return null;
+    }
+
+    public CacheData getAirQualityGeoCacheFromStation(String lat, String lng){
+        for (Entry<List<CacheData>, CacheData> entry : this.airQualityGeoCache.entrySet()){
+            List<CacheData> key = entry.getKey();
+            if(key.get(0).getData().equals(lat) && key.get(1).getData().equals(lng)){
+                return this.airQualityGeoCache.get(key);
             }
         }
         return null;
@@ -184,12 +233,13 @@ public class Cache {
                 Objects.equals(nMisses, cache.nMisses) && 
                 Objects.equals(countriesCache, cache.countriesCache) && 
                 Objects.equals(stationsCache, cache.stationsCache) && 
-                Objects.equals(airQualityCache, cache.airQualityCache);
+                Objects.equals(airQualityCodeCache, cache.airQualityCodeCache) && 
+                Objects.equals(airQualityGeoCache, cache.airQualityGeoCache);
     }
     
     @Override
     public int hashCode() {
-        return Objects.hash(nRequests, nHits, nMisses, countriesCache, stationsCache, airQualityCache);
+        return Objects.hash(nRequests, nHits, nMisses, countriesCache, stationsCache, airQualityCodeCache, airQualityGeoCache);
     }
 
     @Override
@@ -200,7 +250,8 @@ public class Cache {
                 "nMisses='" + Integer.toString(getnMisses()) + "', " +
                 "countriesCache='" + getCountriesCache().toString() + "', " +
                 "stationsCache='" + getStationsCache().toString() + "', " +
-                "airQualityCache='" + getAirQualityCache().toString() + "'" +
+                "airQualityCodeCache='" + getAirQualityCodeCache().toString() + "', " +
+                "airQualityGeoCache='" + getAirQualityGeoCache().toString() + "'" +
                 "}";
     }
 }

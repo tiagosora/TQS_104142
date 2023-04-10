@@ -19,7 +19,8 @@ public class HttpClient implements IHttpClient{
             ){
             return EntityUtils.toString(response.getEntity());
         } catch (Exception e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "ERROR : Exception fetching from API!");
+            String log = "ERROR : Exception fetching from API!";
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, log);
             return null;
         }
     }
