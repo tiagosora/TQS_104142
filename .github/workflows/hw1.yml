@@ -1,0 +1,29 @@
+name: HW1 Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - HW1/**
+
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 17
+      - run: cd HW1/backend && mvn test
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 17
+      - run: cd HW1/backend && mvn package
