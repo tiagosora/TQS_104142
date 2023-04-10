@@ -1,6 +1,8 @@
 package tqs.homework.airquality.client;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -37,6 +39,8 @@ class RequestHandlerTest {
         JSONObject result = requestHandler.findCountries();
         JSONObject expectedResult = (JSONObject)(new JSONParser().parse(RESPONSE));
         assertEquals(expectedResult, result);
+
+        verify(httpClient, times(1)).doHttpGet(request);
     }
 
     @Test
@@ -48,6 +52,8 @@ class RequestHandlerTest {
         JSONObject result = requestHandler.findStations("Portugal");
         JSONObject expectedResult = (JSONObject)(new JSONParser().parse(RESPONSE));
         assertEquals(expectedResult, result);
+
+        verify(httpClient, times(1)).doHttpGet(request);
     }
 
     @Test
@@ -58,6 +64,8 @@ class RequestHandlerTest {
         JSONObject result = requestHandler.findAirQualityByCode("8372");
         JSONObject expectedResult = (JSONObject)(new JSONParser().parse(RESPONSE));
         assertEquals(expectedResult, result);
+
+        verify(httpClient, times(1)).doHttpGet(request);
     }
 
     @Test
@@ -68,5 +76,7 @@ class RequestHandlerTest {
         JSONObject result = requestHandler.findAirQualityByGeo("41.274166666667", "-8.3761111111111");
         JSONObject expectedResult = (JSONObject)(new JSONParser().parse(RESPONSE));
         assertEquals(expectedResult, result);
+
+        verify(httpClient, times(1)).doHttpGet(request);
     }
 }

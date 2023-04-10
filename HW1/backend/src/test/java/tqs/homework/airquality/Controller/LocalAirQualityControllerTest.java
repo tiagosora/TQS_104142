@@ -3,6 +3,8 @@ package tqs.homework.airquality.Controller;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -48,14 +50,16 @@ class LocalAirQualityControllerTest {
         mvc.perform(
             get("/api/v1/countries")
             .contentType(MediaType.APPLICATION_JSON))
-            // .andDo(print())
             .andExpectAll(
                 status().isOk(),
                 content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON),
                 jsonPath("$", hasSize(equalTo(81))),
                 jsonPath("$[0]", is("Alaska")),
-                jsonPath("$[-1]", is("Zhengzhou")))
-            ;
+                jsonPath("$[-1]", is("Zhengzhou"))
+            )
+        ;
+
+        verify(service, times(1)).getCountries();
     }
 
     @Test
@@ -70,21 +74,21 @@ class LocalAirQualityControllerTest {
         mvc.perform(
             get("/api/v1/stations/Portugal")
             .contentType(MediaType.APPLICATION_JSON))
-            // .andDo(print())
             .andExpectAll(
                 status().isOk(),
                 content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON),
                 jsonPath("$.8372", is("Paços de Ferreira, Paços de Ferreira, Portugal")),
                 jsonPath("$.10520", is("São João, Funchal, Portugal")),
-                jsonPath("$.9999").doesNotExist())
-            ;
+                jsonPath("$.9999").doesNotExist()
+            )
         ;
+        
+        verify(service, times(1)).getStations("Portugal");
     }
 
     @Test
     void whenGetAirQuality_thenReturnAirQualityFromStations() throws Exception {
 
-        // 8372, Paços de Ferreira, Paços de Ferreira, Portugal
         Double[] geolocation = {41.274166666667,-8.3761111111111};
         Location location = new Location("8372", "Paços de Ferreira, Paços de Ferreira, Portugal", "Portugal", geolocation);
         AirQuality airQuality = new AirQuality("37", "39", "2", "3.1", "37", "10", "o3");
@@ -107,14 +111,16 @@ class LocalAirQualityControllerTest {
                 jsonPath("$.airQuality.no2", is("3.1")),
                 jsonPath("$.airQuality.o3", is("37")),
                 jsonPath("$.airQuality.waterGauge", is("10")),
-                jsonPath("$.airQuality.dominentPolutent", is("o3")))
-            ;
+                jsonPath("$.airQuality.dominentPolutent", is("o3"))
+            )
+        ;
+
+        verify(service, times(1)).getAirQualityByCode("8372");
     }
 
     @Test
     void whenGetAirQuality_thenReturnAirQualityFromGeolocation() throws Exception {
 
-        // 8372, Paços de Ferreira, Paços de Ferreira, Portugal
         Double[] geolocation = {41.274166666667,-8.3761111111111};
         Location location = new Location("8372", "Paços de Ferreira, Paços de Ferreira, Portugal", "Portugal", geolocation);
         AirQuality airQuality = new AirQuality("37", "39", "2", "3.1", "37", "10", "o3");
@@ -137,8 +143,11 @@ class LocalAirQualityControllerTest {
                 jsonPath("$.airQuality.no2", is("3.1")),
                 jsonPath("$.airQuality.o3", is("37")),
                 jsonPath("$.airQuality.waterGauge", is("10")),
-                jsonPath("$.airQuality.dominentPolutent", is("o3")))
-            ;
+                jsonPath("$.airQuality.dominentPolutent", is("o3"))
+            )
+        ;
+
+        verify(service, times(1)).getAirQualityByGeo("41.274166666667", "-8.3761111111111");
     }
 
     @Test
@@ -160,6 +169,8 @@ class LocalAirQualityControllerTest {
                 jsonPath("$.airQualityCodeCache", is(new HashMap<>())),
                 jsonPath("$.airQualityGeoCache", is(new HashMap<>()))
             )
-            ;
+        ;
+
+        verify(service, times(1)).getCache();
     }
 }

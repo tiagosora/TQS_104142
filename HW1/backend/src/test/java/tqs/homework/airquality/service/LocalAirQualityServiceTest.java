@@ -2,6 +2,9 @@ package tqs.homework.airquality.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -63,6 +66,8 @@ class LocalAirQualityServiceTest {
 
         assertTrue(localAirQualityService.getCountries().containsAll(countriesList));
         assertTrue(localAirQualityService.getCountries().containsAll(countriesList));
+
+        verify(requestHandler, times(1)).findCountries();
     }
 
     @Test
@@ -74,6 +79,8 @@ class LocalAirQualityServiceTest {
 
        assertEquals(stations, localAirQualityService.getStations("Portugal"));
        assertEquals(stations, localAirQualityService.getStations("Portugal"));
+
+       verify(requestHandler, times(1)).findStations(anyString());
     }
 
     @Test
@@ -91,6 +98,8 @@ class LocalAirQualityServiceTest {
 
         assertEquals(localAirQuality.toString(), localAirQualityService.getAirQualityByCode("8383").toString());
         assertEquals(localAirQuality.toString(), localAirQualityService.getAirQualityByCode("8383").toString());
+
+        verify(requestHandler, times(1)).findAirQualityByCode(anyString());
     }
 
     @Test 
@@ -102,12 +111,15 @@ class LocalAirQualityServiceTest {
 
         assertEquals(localAirQuality.toString(), localAirQualityService.getAirQualityByGeo("41.274166666667", "-8.3761111111111").toString());
         assertEquals(localAirQuality.toString(), localAirQualityService.getAirQualityByGeo("41.274166666667", "-8.3761111111111").toString());
+
+        verify(requestHandler, times(1)).findAirQualityByGeo(anyString(), anyString());
     }
 
     @Test
     void whenGetAirQualityByInvalidStation_thenReturnsErrorMessage() throws URISyntaxException, IOException, ParseException{
         LocalAirQuality localAirQuality = new LocalAirQuality();
         assertEquals(localAirQuality, localAirQualityService.getAirQualityByCode("Invalid"));
+        verify(requestHandler, times(0)).findAirQualityByCode(anyString());
     }
 
     @Test
@@ -115,5 +127,6 @@ class LocalAirQualityServiceTest {
         LocalAirQuality localAirQuality = new LocalAirQuality();
         assertEquals(localAirQuality, localAirQualityService.getAirQualityByGeo("A", "B"));
         assertEquals(localAirQuality, localAirQualityService.getAirQualityByGeo("40.1", "40.1"));
+        verify(requestHandler, times(1)).findAirQualityByGeo(anyString(), anyString());
     }
 }
